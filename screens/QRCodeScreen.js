@@ -3,9 +3,9 @@ import React, { useLayoutEffect, useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
+import QRCodeScanner from "../components/QRCodeScanner";
 
-//Page d'accueil de l'application.
-const HomeScreen = () => {
+const QRCodeScreen = () => {
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);
   const scrollRef = useRef();
@@ -57,8 +57,9 @@ const HomeScreen = () => {
   return (
     <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
       {seacrhMenuVisible && <SeacrhMenu />}
+      <QRCodeScanner/>
     </Animated.ScrollView>
   );
 };
 
-export default HomeScreen;
+export default QRCodeScreen;

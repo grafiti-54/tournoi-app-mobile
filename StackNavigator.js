@@ -8,6 +8,7 @@ import Poppins from "./assets/fonts/Poppins-Regular.ttf"
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import HomeScreen from "./screens/HomeScreen";
+import QRCodeScreen from "./screens/QRCodeScreen";
 
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -59,18 +60,18 @@ function BottomTabs() {
             },
           }}
         />
-        {/* Favoris menu en bas de l'écran du téléphone. */}
-        {/* <Tab.Screen
+        {/* QR Code menu en bas de l'écran du téléphone. */}
+        <Tab.Screen
           name="Menus"
-          component={MenuPizzaScreen}
+          component={QRCodeScreen}
           options={{
-            tabBarLabel: "Nos menus",
+            tabBarLabel: "QR Code",
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
-                <Ionicons name="pizza" size={34} color="#00A149" /> // icone plein avec focus.
+                <AntDesign name="qrcode" size={34} color="#02A3FE" /> // icone plein avec focus.
               ) : (
-                <Ionicons name="pizza-outline" size={34} color="white" /> // icone vide sans focus.
+                <AntDesign name="qrcode" size={34} color="white" /> // icone vide sans focus.
               ),
             tabBarLabelStyle: {
               color: "white", // change la couleur du label.
@@ -78,7 +79,7 @@ function BottomTabs() {
               fontFamily: "Poppins",
             },
           }}
-        /> */}
+        />
         {/* Réservation menu en bas de l'écran du téléphone. */}
         {/* <Tab.Screen
           name="Contact"

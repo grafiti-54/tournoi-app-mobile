@@ -7,7 +7,7 @@ export const fetchPublicUpcomingTournaments = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.getPublicUpcomingTournaments();
-      console.log("response serveur", response);
+      //console.log("response serveur", response);
       return response.data;
     } catch (error) {
       if (error.response) {
