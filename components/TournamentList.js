@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPublicTournaments } from "../redux/features/tournoiSlice.js";
+import {
+  fetchPublicTournaments,
+} from "../redux/features/tournoiSlice.js";
 
 //Affichage de la liste des tournois a venir dans le menu de recherche.
-const FuturTournamentList = () => {
+const TournamentList = () => {
   const dispatch = useDispatch();
   const tournaments = useSelector((state) => state?.tournoi?.data);
   const searchValue = useSelector((state) => state.tournoi.searchValue);
@@ -18,14 +20,16 @@ const FuturTournamentList = () => {
       return [];
     }
 
-    const results = tournaments?.filter((tournament) =>
-      tournament.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      tournament.adresse.toLowerCase().includes(searchValue.toLowerCase())
+    const results = tournaments?.filter(
+      (tournament) =>
+        tournament?.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        tournament?.adresse.toLowerCase().includes(searchValue.toLowerCase())
     );
 
     return results.slice(0, 5); // Limite à 5 résultats
   }, [tournaments, searchValue]);
 
+  
   return (
     <View
       style={{
@@ -35,17 +39,26 @@ const FuturTournamentList = () => {
         alignSelf: "center",
       }}
     >
-       {filteredTournaments.length > 0 ? (
-        filteredTournaments.map((tournament) => (
-          <Text
-            style={{ color: "black", fontSize: 16, padding: 8 }}
+      {filteredTournaments?.length > 0 ? (
+        filteredTournaments?.map((tournament) => (
+          <View
             key={tournament.tournoi_id}
+            style={{ flexDirection: "row", alignItems: "center" }}
           >
-            {tournament.name}
-          </Text>
+            <Text style={{ color: "black", fontSize: 16, padding: 8 }}>
+              {tournament.name}
+            </Text>
+          </View>
         ))
       ) : searchValue.length >= 4 ? (
-        <Text style={{ color: "gray", fontSize: 16, padding: 8, textAlign: "center" }}>
+        <Text
+          style={{
+            color: "gray",
+            fontSize: 16,
+            padding: 8,
+            textAlign: "center",
+          }}
+        >
           Aucun résultat trouvé.
         </Text>
       ) : null}
@@ -53,4 +66,4 @@ const FuturTournamentList = () => {
   );
 };
 
-export default FuturTournamentList;
+export default TournamentList;

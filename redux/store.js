@@ -23,6 +23,7 @@ export const store = configureStore({
         ignoredActions: ['persist/PERSIST'],
       },
     }),
+    devTools: process.env.EXPO_PUBLIC_NODE_ENV !== 'production',
 });
 
 export const persistor = persistStore(store);

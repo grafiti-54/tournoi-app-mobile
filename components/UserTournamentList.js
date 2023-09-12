@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { View, Text, Image, StyleSheet, Button, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,6 +28,7 @@ const UserTournamentList = () => {
 
   //Fonction de suppression d'un tournoi de la liste.
   const handleRemoveTournament = (tournamentId) => {
+    //console.log("ID du tournoi à supprimer:", tournamentId);
     Alert.alert(
       "Supprimer le tournoi",
       "Êtes-vous sûr de vouloir supprimer ce tournoi de votre liste?",
@@ -41,6 +42,7 @@ const UserTournamentList = () => {
           onPress: () => {
             //console.log("Suppression du tournoi avec l'ID:", tournamentId);
             dispatch(removeUserTournament(tournamentId));
+            //console.log("Action removeUserTournament dispatchée avec l'ID:", tournamentId);
           },
         },
       ],

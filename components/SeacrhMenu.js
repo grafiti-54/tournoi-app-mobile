@@ -2,11 +2,10 @@ import {  View, TextInput } from "react-native";
 import React from "react";
 import { setSearchValue } from "../redux/features/tournoiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import FuturTournamentList from './FuturTournamentList';
+import TournamentList from './TournamentList';
 
 //Barre de recherche en dessous du header.
 const SeacrhMenu = () => {
-
   const dispatch = useDispatch();
   const searchValue = useSelector((state) => state.tournoi.searchValue);
 
@@ -48,8 +47,8 @@ const SeacrhMenu = () => {
         value={searchValue}
         onChangeText={handleSearchChange}
       />
-      {/* Liste des tournois filtrés */}
-      <FuturTournamentList />
+      {/* Liste des tournois filtrés lors de la recherche*/}
+      <TournamentList />
     </View>
   )
 }
