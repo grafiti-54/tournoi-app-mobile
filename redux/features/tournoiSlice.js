@@ -7,7 +7,7 @@ export const fetchPublicTournaments = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.getPublicTournaments();
-      //console.log("response serveur", response);
+      console.log("Données renvoyées par l'API:", response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -54,17 +54,33 @@ const tournoiSlice = createSlice({
       state.searchValue = action.payload;
     },
     addUserTournament: (state, action) => {
-      state.userTournaments.push(action.payload);
+      const tournamentIdToAdd = action.payload;
+      if (!state.userTournaments.includes(tournamentIdToAdd)) {
+        state.userTournaments.push(tournamentIdToAdd);
+      }
     },
+
     removeUserTournament: (state, action) => {
       // console.log("État actuel des userTournaments:", state.userTournaments);
       // console.log("ID du tournoi à supprimer:", action.payload);
-      const tournamentIdToRemove = String(action.payload); // Convertir en chaîne de caractères
+      // console.log(
+      //   "Type de l'ID du tournoi à supprimer:",
+      //   typeof action.payload
+      // );
+      // console.log(
+      //   "Type du premier élément de userTournaments:",
+      //   typeof state.userTournaments[0]
+      // );
+
+      // Convertir l'ID en chaîne de caractères pour la comparaison
+      const tournamentIdToRemove = String(action.payload);
+
       const updatedTournaments = state.userTournaments.filter(
         (tournamentId) => tournamentId !== tournamentIdToRemove
       );
-      //console.log("userTournaments après suppression:", updatedTournaments);
+
       state.userTournaments = updatedTournaments;
+      //console.log("État de userTournaments après suppression:", state.userTournaments);
     },
   },
   extraReducers: (builder) => {

@@ -8,9 +8,11 @@ import Poppins from "./assets/fonts/Poppins-Regular.ttf";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from '@expo/vector-icons';
 import HomeScreen from "./screens/HomeScreen";
 import QRCodeScreen from "./screens/QRCodeScreen";
 import MesTournoisScreen from "./screens/MesTournoisScreen";
+import TournoiScreen from './screens/TournoiScreen';
 
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -65,9 +67,9 @@ const StackNavigator = () => {
         {/* Mes tournois menu en bas de l'écran du téléphone. */}
         <Tab.Screen
           name="Mes tournois"
-          component={MesTournoisScreen}
+          component={TournoiScreen}
           options={{
-            tabBarLabel: "Mes tournois",
+            tabBarLabel: "Tournoi",
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
@@ -79,6 +81,33 @@ const StackNavigator = () => {
               ) : (
                 <MaterialCommunityIcons
                   name="tournament"
+                  size={34}
+                  color="white"
+                /> // icone vide sans focus.
+              ),
+            tabBarLabelStyle: {
+              color: "white", // change la couleur du label.
+              fontSize: 16, // change la taille du label.
+              fontFamily: "Poppins",
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Favoris"
+          component={MesTournoisScreen}
+          options={{
+            tabBarLabel: "Favoris",
+            headerShown: false,
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <MaterialIcons
+                  name="favorite"
+                  size={34}
+                  color="#02A3FE"
+                /> // icone plein avec focus.
+              ) : (
+                <MaterialIcons
+                  name="favorite-outline"
                   size={34}
                   color="white"
                 /> // icone vide sans focus.
