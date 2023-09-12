@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api.js";
 
 //Récupération de tous les futurs tournois public.
-export const fetchPublicUpcomingTournaments = createAsyncThunk(
-  "tournoi/fetchPublicUpcomingTournaments",
+export const fetchPublicTournaments = createAsyncThunk(
+  "tournoi/fetchPublicTournaments",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.getPublicUpcomingTournaments();
+      const response = await api.getPublicTournaments();
       //console.log("response serveur", response);
       return response.data;
     } catch (error) {
@@ -19,13 +19,17 @@ export const fetchPublicUpcomingTournaments = createAsyncThunk(
   }
 );
 
-//Récupération de tous les anciens tournois public.
-export const fetchPublicPastTournaments = createAsyncThunk(
-  "tournoi/fetchPublicPastTournaments",
-  async (_, { rejectWithValue }) => {
+// Récupération des informations d'un tournoi
+export const fetchTournamentById = createAsyncThunk(
+  "tournoi/fetchTournamentById",
+  async (tournoiId, { rejectWithValue }) => {
     try {
-      const response = await api.getPublicPastTournaments();
-      return response.data;
+      const response = await api.getTournamentInfoById(tournoiId);
+      if (response.data && response.data.tournoi) {
+        return response.data.tournoi;
+      } else {
+        return rejectWithValue({ msg: "Aucun tournoi trouvé avec cet ID." });
+      }
     } catch (error) {
       if (error.response) {
         return rejectWithValue(error.response.data);
@@ -36,16 +40,11 @@ export const fetchPublicPastTournaments = createAsyncThunk(
   }
 );
 
-const initialDataState = [];
-const initialSingleState = {};
-
 const tournoiSlice = createSlice({
   name: "tournoi",
   initialState: {
-    data: initialDataState,
-    upcoming: initialDataState,
-    past: initialDataState,
-    single: initialSingleState,
+    data: {},
+    userTournaments: [],
     error: null,
     loading: false,
     searchValue: "",
@@ -54,41 +53,62 @@ const tournoiSlice = createSlice({
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
     },
+    addUserTournament: (state, action) => {
+      state.userTournaments.push(action.payload);
+    },
+    removeUserTournament: (state, action) => {
+      // console.log("État actuel des userTournaments:", state.userTournaments);
+      // console.log("ID du tournoi à supprimer:", action.payload);
+      const tournamentIdToRemove = String(action.payload); // Convertir en chaîne de caractères
+      const updatedTournaments = state.userTournaments.filter(
+        (tournamentId) => tournamentId !== tournamentIdToRemove
+      );
+      //console.log("userTournaments après suppression:", updatedTournaments);
+      state.userTournaments = updatedTournaments;
+    },
   },
   extraReducers: (builder) => {
     builder
-      //Récupération des tounois futur.
-      .addCase(fetchPublicUpcomingTournaments.pending, (state) => {
+      //Récupération des tounois publics.
+      .addCase(fetchPublicTournaments.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPublicUpcomingTournaments.fulfilled, (state, action) => {
+      .addCase(fetchPublicTournaments.fulfilled, (state, action) => {
         state.loading = false;
-        state.upcoming = action.payload;
+        action.payload.forEach((tournament) => {
+          state.data[tournament.tournoi_id] = tournament;
+        });
       })
-      .addCase(fetchPublicUpcomingTournaments.rejected, (state, action) => {
+
+      .addCase(fetchPublicTournaments.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload
           ? action.payload.msg
           : "Une erreur inconnue est survenue.";
       })
-      //Récupération des tournoi déjà terminé.
-      .addCase(fetchPublicPastTournaments.pending, (state) => {
+      //Récupération des informations d'un tournoi selon son id.
+      .addCase(fetchTournamentById.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-      .addCase(fetchPublicPastTournaments.fulfilled, (state, action) => {
+      .addCase(fetchTournamentById.fulfilled, (state, action) => {
         state.loading = false;
-        state.past = action.payload; // Mettre à jour `past` ici
+        state.data[action.payload.tournoi_id] = action.payload;
       })
-      .addCase(fetchPublicPastTournaments.rejected, (state, action) => {
+
+      .addCase(fetchTournamentById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload
-          ? action.payload.msg
-          : "Une erreur inconnue est survenue.";
+        if (action.payload && action.payload.msg) {
+          state.error = action.payload.msg;
+        } else if (action.error && action.error.message) {
+          state.error = action.error.message;
+        } else {
+          state.error = null;
+        }
       });
   },
 });
 
-export const { setSearchValue } = tournoiSlice.actions;
+export const { setSearchValue, addUserTournament, removeUserTournament } =
+  tournoiSlice.actions;
 export default tournoiSlice.reducer;

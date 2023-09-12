@@ -5,5 +5,8 @@ console.log("Connecting to API at:", process.env.EXPO_PUBLIC_API_URL);
 API.defaults.withCredentials = true;
 
 //Tournoi
-export const getPublicUpcomingTournaments = () =>
-  API.get("/tournoi/public/getPublicUpcomingTournaments");
+export const getPublicTournaments = () =>
+  API.get("/tournoi/public/getAllPublicTournament");
+
+export const getTournamentInfoById = (tournoiId) =>
+  API.get(`/tournoi/infos/${tournoiId}`);

@@ -1,14 +1,16 @@
-import { StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from "expo-font"; 
-import Poppins from "./assets/fonts/Poppins-Regular.ttf"
+import { useFonts } from "expo-font";
+import Poppins from "./assets/fonts/Poppins-Regular.ttf";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import HomeScreen from "./screens/HomeScreen";
 import QRCodeScreen from "./screens/QRCodeScreen";
+import MesTournoisScreen from "./screens/MesTournoisScreen";
 
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -23,11 +25,11 @@ const StackNavigator = () => {
 
   //Chargement de la font de l'application.
   const [isFontLoaded] = useFonts({
-    "Poppins": Poppins,
+    Poppins: Poppins,
   });
 
-//Menu en bas de l'écran du téléphone.
-function BottomTabs() {
+  //Menu en bas de l'écran du téléphone.
+  function BottomTabs() {
     return (
       <Tab.Navigator
         screenOptions={{
@@ -60,6 +62,34 @@ function BottomTabs() {
             },
           }}
         />
+        {/* Mes tournois menu en bas de l'écran du téléphone. */}
+        <Tab.Screen
+          name="Mes tournois"
+          component={MesTournoisScreen}
+          options={{
+            tabBarLabel: "Mes tournois",
+            headerShown: false,
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <MaterialCommunityIcons
+                  name="tournament"
+                  size={34}
+                  color="#02A3FE"
+                /> // icone plein avec focus.
+              ) : (
+                <MaterialCommunityIcons
+                  name="tournament"
+                  size={34}
+                  color="white"
+                /> // icone vide sans focus.
+              ),
+            tabBarLabelStyle: {
+              color: "white", // change la couleur du label.
+              fontSize: 16, // change la taille du label.
+              fontFamily: "Poppins",
+            },
+          }}
+        />
         {/* QR Code menu en bas de l'écran du téléphone. */}
         <Tab.Screen
           name="Menus"
@@ -80,48 +110,20 @@ function BottomTabs() {
             },
           }}
         />
-        {/* Réservation menu en bas de l'écran du téléphone. */}
-        {/* <Tab.Screen
-          name="Contact"
-          component={ContactScreen}
-          options={{
-            tabBarLabel: "Contact",
-            headerShown: false,
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <MaterialCommunityIcons
-                  name="contacts"
-                  size={34}
-                  color="#00A149"
-                /> // icone plein avec focus.
-              ) : (
-                <MaterialCommunityIcons
-                  name="contacts-outline"
-                  size={34}
-                  color="white"
-                /> // icone vide sans focus.
-              ),
-            tabBarLabelStyle: {
-              color: "white", // change la couleur du label.
-              fontSize: 16, // change la taille du label.
-              fontFamily: "Poppins",
-            },
-          }}
-        /> */}
       </Tab.Navigator>
     );
   }
 
   return (
     <NavigationContainer theme={navTheme}>
-    {isFontLoaded ? (
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Main"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-        {/* <Stack.Screen
+      {isFontLoaded ? (
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Main"
+            component={BottomTabs}
+            options={{ headerShown: false }}
+          />
+          {/* <Stack.Screen
           name="menus"
           component={MenuPizzaScreen}
           options={{ headerShown: false }} // cache le header. Sera défini dans chaque screen pour afficher le header dynamiquement.
@@ -131,10 +133,10 @@ function BottomTabs() {
           component={ContactScreen}
           options={{ headerShown: false }} // cache le header. Sera défini dans chaque screen pour afficher le header dynamiquement.
         /> */}
-      </Stack.Navigator>
+        </Stack.Navigator>
       ) : null}
     </NavigationContainer>
-  );;
+  );
 };
 
 export default StackNavigator;
