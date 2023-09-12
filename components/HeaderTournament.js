@@ -1,10 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const HeaderTournament = () => {
+//
+const HeaderTournament = ({ setSelectedComponent }) => {
+  const [activeTab, setActiveTab] = useState("Informations");
   return (
     // Container header
     <View
@@ -18,14 +20,24 @@ const HeaderTournament = () => {
     >
       {/*  Info tournoi ( résumé ) */}
       <Pressable
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          borderColor: "white",
-          borderWidth: 1,
-          borderRadius: 25,
-          padding: 8,
+        onPress={() => {
+          setSelectedComponent("Informations");
+          setActiveTab("Informations");
         }}
+        style={[
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: 25,
+            padding: 8,
+          },
+          activeTab === "Informations"
+            ? {
+                borderColor: "white",
+                borderWidth: 1,
+              }
+            : {},
+        ]}
       >
         <Ionicons name="information-circle-sharp" size={24} color="white" />
         <Text
@@ -42,10 +54,24 @@ const HeaderTournament = () => {
 
       {/*  Résultats match du tournoi */}
       <Pressable
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
+        onPress={() => {
+          setSelectedComponent("Résultats");
+          setActiveTab("Résultats");
         }}
+        style={[
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: 25,
+            padding: 8,
+          },
+          activeTab === "Résultats"
+            ? {
+                borderColor: "white",
+                borderWidth: 1,
+              }
+            : {},
+        ]}
       >
         <MaterialCommunityIcons
           name="scoreboard-outline"
@@ -66,10 +92,24 @@ const HeaderTournament = () => {
 
       {/*  Classement du tournoi */}
       <Pressable
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
+        onPress={() => {
+          setSelectedComponent("Classement");
+          setActiveTab("Classement");
         }}
+        style={[
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: 25,
+            padding: 8,
+          },
+          activeTab === "Classement"
+            ? {
+                borderColor: "white",
+                borderWidth: 1,
+              }
+            : {},
+        ]}
       >
         <FontAwesome5 name="table" size={26} color="white" />
         <Text

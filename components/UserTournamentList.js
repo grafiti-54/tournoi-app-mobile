@@ -1,15 +1,26 @@
-import React, {useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button, Alert } from "react-native";
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTournamentById,
   removeUserTournament,
+  setCurrentTournamentId,
 } from "../redux/features/tournoiSlice";
 import moment from "moment";
+import { useNavigation } from "@react-navigation/native";
 
-//Récupération de la liste des tournois suivi par l'utilisateur.
+//Récupération de la liste des tournois suivi par l'utilisateur en favoris.
 const UserTournamentList = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   // Utilisez directement les tournois de l'utilisateur depuis le state Redux
   const userTournaments = useSelector((state) => state.tournoi.userTournaments);
@@ -50,6 +61,15 @@ const UserTournamentList = () => {
     );
   };
 
+
+  //Récupération de l'id du tournoi et redirection vers le screen du tournoi.
+  const handleTournamentClick = (tournamentId) => {
+    // Stocke l'ID du tournoi dans le store
+    dispatch(setCurrentTournamentId(tournamentId));
+    // Navigue vers le nouvel écran
+    navigation.navigate('Tournoi detail'); // voir le name Tab.Screen dans stackNavigator
+  };
+
   return (
     <View style={styles.container}>
       {loading && <Text>Chargement...</Text>}
@@ -59,7 +79,9 @@ const UserTournamentList = () => {
       )}
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
-        {/* console.log("Tournament pour ID", tournamentId, ":", tournament); */}
+        {
+          /* console.log("Tournament pour ID", tournamentId, ":", tournament); */
+        }
 
         if (!tournament) {
           return (
@@ -67,7 +89,11 @@ const UserTournamentList = () => {
           );
         }
         return (
-          <View key={index} style={styles.card}>
+          <TouchableOpacity
+            key={index}
+            style={styles.card}
+            onPress={() => handleTournamentClick(tournament.tournoi_id)}
+          >
             <Image
               source={{ uri: tournament?.imagepath }}
               style={styles.image}
@@ -81,7 +107,7 @@ const UserTournamentList = () => {
               title="Supprimer"
               onPress={() => handleRemoveTournament(tournament.tournoi_id)}
             />
-          </View>
+          </TouchableOpacity>
         );
       })}
     </View>

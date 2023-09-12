@@ -8,11 +8,11 @@ import Poppins from "./assets/fonts/Poppins-Regular.ttf";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import HomeScreen from "./screens/HomeScreen";
 import QRCodeScreen from "./screens/QRCodeScreen";
 import MesTournoisScreen from "./screens/MesTournoisScreen";
-import TournoiScreen from './screens/TournoiScreen';
+import TournoiScreen from "./screens/TournoiScreen";
 
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -40,8 +40,6 @@ const StackNavigator = () => {
             backgroundColor: "#090915",
             //#02A3FE
           },
-          //tabBarActiveTintColor: "#00A149", // Couleur du label et de l'icône quand l'onglet est actif
-          //tabBarInactiveTintColor: "white", // Couleur du label et de l'icône quand l'onglet est inactif
         }}
       >
         {/* Accueil menu en bas de l'écran du téléphone. */}
@@ -66,7 +64,7 @@ const StackNavigator = () => {
         />
         {/* Mes tournois menu en bas de l'écran du téléphone. */}
         <Tab.Screen
-          name="Mes tournois"
+          name="Tournoi detail"
           component={TournoiScreen}
           options={{
             tabBarLabel: "Tournoi",
@@ -100,11 +98,7 @@ const StackNavigator = () => {
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
-                <MaterialIcons
-                  name="favorite"
-                  size={34}
-                  color="#02A3FE"
-                /> // icone plein avec focus.
+                <MaterialIcons name="favorite" size={34} color="#02A3FE" /> // icone plein avec focus.
               ) : (
                 <MaterialIcons
                   name="favorite-outline"
@@ -133,8 +127,8 @@ const StackNavigator = () => {
                 <AntDesign name="qrcode" size={34} color="white" /> // icone vide sans focus.
               ),
             tabBarLabelStyle: {
-              color: "white", // change la couleur du label.
-              fontSize: 16, // change la taille du label.
+              color: "white",
+              fontSize: 16,
               fontFamily: "Poppins",
             },
           }}
@@ -153,15 +147,10 @@ const StackNavigator = () => {
             options={{ headerShown: false }}
           />
           {/* <Stack.Screen
-          name="menus"
-          component={MenuPizzaScreen}
-          options={{ headerShown: false }} // cache le header. Sera défini dans chaque screen pour afficher le header dynamiquement.
-        />
-        <Stack.Screen
-          name="contact"
-          component={ContactScreen}
-          options={{ headerShown: false }} // cache le header. Sera défini dans chaque screen pour afficher le header dynamiquement.
-        /> */}
+            name="TournamentDetails"
+            component={TournoiScreen}
+            options={{ headerTitle: "Détails du Tournoi" }}
+          /> */}
         </Stack.Navigator>
       ) : null}
     </NavigationContainer>
