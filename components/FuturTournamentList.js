@@ -1,22 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPublicUpcomingTournaments } from "../redux/features/tournoiSlice.js";
+import { fetchPublicTournaments } from "../redux/features/tournoiSlice.js";
 
 //Affichage de la liste des tournois a venir dans le menu de recherche.
 const FuturTournamentList = () => {
   const dispatch = useDispatch();
-  const tournaments = useSelector((state) => state?.tournoi?.upcoming);
+  const tournaments = useSelector((state) => state?.tournoi?.data);
   const searchValue = useSelector((state) => state.tournoi.searchValue);
 
   useEffect(() => {
-    dispatch(fetchPublicUpcomingTournaments());
+    dispatch(fetchPublicTournaments());
   }, []);
-
-  //console.log(tournaments);
-  // const filteredTournaments = tournaments?.filter((tournament) =>
-  //   tournament.name.toLowerCase().includes(searchValue.toLowerCase())
-  // );
 
   const filteredTournaments = useMemo(() => {
     if (searchValue.length < 2) {
