@@ -45,22 +45,27 @@ const tournoiSlice = createSlice({
   initialState: {
     data: {},
     userTournaments: [],
+    currentTournamentId: null, //id du tournoi consulté par l'utilisateur.
     error: null,
     loading: false,
     searchValue: "",
   },
   reducers: {
+    setCurrentTournamentId: (state, action) => {
+      state.currentTournamentId = action.payload;
+    },
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
     },
     addUserTournament: (state, action) => {
-      const tournamentIdToAdd = action.payload;
+      const tournamentIdToAdd = String(action.payload);
       if (!state.userTournaments.includes(tournamentIdToAdd)) {
         state.userTournaments.push(tournamentIdToAdd);
       }
     },
 
     removeUserTournament: (state, action) => {
+
       // console.log("État actuel des userTournaments:", state.userTournaments);
       // console.log("ID du tournoi à supprimer:", action.payload);
       // console.log(
@@ -125,6 +130,6 @@ const tournoiSlice = createSlice({
   },
 });
 
-export const { setSearchValue, addUserTournament, removeUserTournament } =
+export const {setCurrentTournamentId, setSearchValue, addUserTournament, removeUserTournament } =
   tournoiSlice.actions;
 export default tournoiSlice.reducer;

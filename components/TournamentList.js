@@ -1,13 +1,17 @@
 import React, { useEffect, useMemo } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addUserTournament,
   fetchPublicTournaments,
+  setCurrentTournamentId,
 } from "../redux/features/tournoiSlice.js";
+import { useNavigation } from "@react-navigation/native";
 
 //Affichage de la liste des tournois a venir dans le menu de recherche.
 const TournamentList = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const tournaments = useSelector((state) => state?.tournoi?.data);
   const searchValue = useSelector((state) => state.tournoi.searchValue);
 
@@ -29,7 +33,16 @@ const TournamentList = () => {
     return results.slice(0, 5); // Limite à 5 résultats
   }, [tournaments, searchValue]);
 
-  
+  //Récupération de l'id du tournoi et redirection vers le screen du tournoi.
+  const handleTournamentClick = (tournamentId) => {
+    // Stocke l'ID du tournoi dans le store
+    dispatch(setCurrentTournamentId(tournamentId));
+    //Rajoute le tournoi dans la liste des tournoi suivi par l'utilisateur.
+    dispatch(addUserTournament(tournamentId));
+    // Navigue vers le nouvel écran
+    navigation.navigate('Tournoi detail'); // voir le name Tab.Screen dans stackNavigator
+  };
+
   return (
     <View
       style={{
@@ -41,14 +54,16 @@ const TournamentList = () => {
     >
       {filteredTournaments?.length > 0 ? (
         filteredTournaments?.map((tournament) => (
-          <View
+          <TouchableOpacity
             key={tournament.tournoi_id}
-            style={{ flexDirection: "row", alignItems: "center" }}
+            onPress={() => handleTournamentClick(tournament.tournoi_id)}
           >
-            <Text style={{ color: "black", fontSize: 16, padding: 8 }}>
-              {tournament.name}
-            </Text>
-          </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ color: "black", fontSize: 16, padding: 8 }}>
+                {tournament.name}
+              </Text>
+            </View>
+          </TouchableOpacity>
         ))
       ) : searchValue.length >= 4 ? (
         <Text

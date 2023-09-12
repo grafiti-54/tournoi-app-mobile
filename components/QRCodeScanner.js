@@ -3,13 +3,16 @@ import { Text, View, StyleSheet, Alert, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserTournament } from "../redux/features/tournoiSlice";
+import { addUserTournament, setCurrentTournamentId } from "../redux/features/tournoiSlice";
+import { useNavigation } from "@react-navigation/native";
 
+//Composant caméra de l'utilisateur qui permet de scanner un qr code d'un tournoi.
 export default function QRCodeScanner() {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(null);
   const [resetScanner, setResetScanner] = useState(false);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const existingTournaments = useSelector((state) => state.tournoi.userTournaments);
   //const navigation = useNavigation();
   const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
@@ -34,6 +37,8 @@ export default function QRCodeScanner() {
       // Vérifier si le tournoi existe déjà dans le store
       if (existingTournaments.includes(tournamentId)) {
         alert("Ce tournoi est déjà dans votre liste.");
+        dispatch(setCurrentTournamentId(tournamentId));
+        navigation.navigate('Tournoi detail');
         setTimeout(() => {
           setScanned(false);
         }, 5000);
@@ -56,7 +61,9 @@ export default function QRCodeScanner() {
           {
             text: "Ajouter",
             onPress: async () => {
+              dispatch(setCurrentTournamentId(tournamentId));
               dispatch(addUserTournament(tournamentId));
+              navigation.navigate('Tournoi detail');
               setTimeout(() => {
                 setScanned(false);
               }, 2000);
