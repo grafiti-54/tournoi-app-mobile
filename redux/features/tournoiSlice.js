@@ -26,6 +26,7 @@ export const fetchTournamentById = createAsyncThunk(
     try {
       const response = await api.getTournamentInfoById(tournoiId);
       if (response.data && response.data.tournoi) {
+        console.log(response.data)
         return response.data.tournoi;
       } else {
         return rejectWithValue({ msg: "Aucun tournoi trouvé avec cet ID." });
@@ -65,18 +66,6 @@ const tournoiSlice = createSlice({
     },
 
     removeUserTournament: (state, action) => {
-
-      // console.log("État actuel des userTournaments:", state.userTournaments);
-      // console.log("ID du tournoi à supprimer:", action.payload);
-      // console.log(
-      //   "Type de l'ID du tournoi à supprimer:",
-      //   typeof action.payload
-      // );
-      // console.log(
-      //   "Type du premier élément de userTournaments:",
-      //   typeof state.userTournaments[0]
-      // );
-
       // Convertir l'ID en chaîne de caractères pour la comparaison
       const tournamentIdToRemove = String(action.payload);
 
@@ -86,6 +75,10 @@ const tournoiSlice = createSlice({
 
       state.userTournaments = updatedTournaments;
       //console.log("État de userTournaments après suppression:", state.userTournaments);
+    },
+    clearUserTournaments: (state) => {
+      state.userTournaments = [];
+      state.currentTournamentId = null;
     },
   },
   extraReducers: (builder) => {
@@ -130,6 +123,6 @@ const tournoiSlice = createSlice({
   },
 });
 
-export const {setCurrentTournamentId, setSearchValue, addUserTournament, removeUserTournament } =
+export const {setCurrentTournamentId, setSearchValue, addUserTournament, removeUserTournament, clearUserTournaments } =
   tournoiSlice.actions;
 export default tournoiSlice.reducer;
