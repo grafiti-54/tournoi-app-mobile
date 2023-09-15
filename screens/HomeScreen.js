@@ -155,7 +155,7 @@ const HomeScreen = () => {
           }}
         >
           <Image
-            style={{ width: 200, height: 50, resizeMode: "cover" }}
+            style={{ width: 220, height: 250, resizeMode: "cover" }}
             source={{
               uri: "https://res.cloudinary.com/ddx03ty0j/image/upload/v1688817138/TOURNOI-APP_-_Logo_dliuqu.png",
             }}

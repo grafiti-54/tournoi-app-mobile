@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Text, View, StyleSheet, Alert, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserTournament, setCurrentTournamentId } from "../redux/features/tournoiSlice";
+import {
+  addUserTournament,
+  setCurrentTournamentId,
+} from "../redux/features/tournoiSlice";
 import { useNavigation } from "@react-navigation/native";
+import { Camera } from "expo-camera";
+import ManualTournamentInput from "./ManualTournamentInput";
 
 //Composant caméra de l'utilisateur qui permet de scanner un qr code d'un tournoi.
 export default function QRCodeScanner() {
@@ -13,9 +17,13 @@ export default function QRCodeScanner() {
   const [resetScanner, setResetScanner] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const existingTournaments = useSelector((state) => state.tournoi.userTournaments);
+  const existingTournaments = useSelector(
+    (state) => state.tournoi.userTournaments
+  );
   //const navigation = useNavigation();
-  const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+  // const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+  const baseUrl = process.env.EXPO_PUBLIC_LOCAL_BASE_URL;
+  //EXPO_PUBLIC_LOCAL_BASE_URL
 
   //Vérification permission utilisateur ( parametres permissions ajoutées dans app.json)
   useEffect(() => {
@@ -38,7 +46,7 @@ export default function QRCodeScanner() {
       if (existingTournaments.includes(tournamentId)) {
         alert("Ce tournoi est déjà dans votre liste.");
         dispatch(setCurrentTournamentId(tournamentId));
-        navigation.navigate('Tournoi detail');
+        navigation.navigate("Tournoi detail");
         setTimeout(() => {
           setScanned(false);
         }, 5000);
@@ -63,7 +71,7 @@ export default function QRCodeScanner() {
             onPress: async () => {
               dispatch(setCurrentTournamentId(tournamentId));
               dispatch(addUserTournament(tournamentId));
-              navigation.navigate('Tournoi detail');
+              navigation.navigate("Tournoi detail");
               setTimeout(() => {
                 setScanned(false);
               }, 2000);
@@ -83,22 +91,44 @@ export default function QRCodeScanner() {
   const renderCamera = () => {
     return (
       <View style={styles.cameraContainer}>
-        <BarCodeScanner
+        <Camera
           key={resetScanner}
+          style={StyleSheet.absoluteFillObject}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={styles.camera}
+          barCodeScannerSettings={{
+            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+          }}
         />
-          <Button
-            style={styles.boutonReset}
-            title="Scanner un nouveau QR Code"
-            onPress={() => {
-              setTimeout(() => {
-                setScanned(false);
-              }, 2000);
-              setResetScanner(!resetScanner); // Toggle the reset state to force a re-render
-            }}
-          />
+
+        <Button
+          style={styles.boutonReset}
+          title="Scanner un nouveau QR Code"
+          onPress={() => {
+            setTimeout(() => {
+              setScanned(false);
+            }, 2000);
+            setResetScanner(!resetScanner); // Toggle the reset state to force a re-render
+          }}
+        />
       </View>
+
+      // <View style={styles.cameraContainer}>
+      //   <BarCodeScanner
+      //     key={resetScanner}
+      //     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      //     style={styles.camera}
+      //   />
+      //     <Button
+      //       style={styles.boutonReset}
+      //       title="Scanner un nouveau QR Code"
+      //       onPress={() => {
+      //         setTimeout(() => {
+      //           setScanned(false);
+      //         }, 2000);
+      //         setResetScanner(!resetScanner); // Toggle the reset state to force a re-render
+      //       }}
+      //     />
+      // </View>
     );
   };
 
@@ -121,6 +151,12 @@ export default function QRCodeScanner() {
       <Text style={styles.title}>SCAN TOURNOI-APP</Text>
       <Text style={styles.paragraph}>Scannez le QR-Code du tournoi.</Text>
       {renderCamera()}
+      {/* Ajout manuel de l'id d'un tournoi pour emulateur */}
+      {__DEV__ && <ManualTournamentInput 
+            existingTournaments={existingTournaments} 
+            setCurrentTournamentId={setCurrentTournamentId} 
+            addUserTournament={addUserTournament} 
+        />}
     </View>
   );
 }

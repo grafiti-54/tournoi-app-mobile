@@ -19,12 +19,14 @@ const TournamentList = () => {
     dispatch(fetchPublicTournaments());
   }, []);
 
+  const tournamentsArray = Object.values(tournaments);
+
   const filteredTournaments = useMemo(() => {
     if (searchValue.length < 2) {
       return [];
     }
 
-    const results = tournaments?.filter(
+    const results = tournamentsArray.filter(
       (tournament) =>
         tournament?.name.toLowerCase().includes(searchValue.toLowerCase()) ||
         tournament?.adresse.toLowerCase().includes(searchValue.toLowerCase())
@@ -40,7 +42,7 @@ const TournamentList = () => {
     //Rajoute le tournoi dans la liste des tournoi suivi par l'utilisateur.
     dispatch(addUserTournament(tournamentId));
     // Navigue vers le nouvel écran
-    navigation.navigate('Tournoi detail'); // voir le name Tab.Screen dans stackNavigator
+    navigation.navigate("Tournoi detail"); // voir le name Tab.Screen dans stackNavigator
   };
 
   return (

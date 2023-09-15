@@ -7,9 +7,11 @@ import {
   Button,
   Alert,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearUserTournaments,
   fetchTournamentById,
   removeUserTournament,
   setCurrentTournamentId,
@@ -61,17 +63,37 @@ const UserTournamentList = () => {
     );
   };
 
-
   //Récupération de l'id du tournoi et redirection vers le screen du tournoi.
   const handleTournamentClick = (tournamentId) => {
     // Stocke l'ID du tournoi dans le store
     dispatch(setCurrentTournamentId(tournamentId));
     // Navigue vers le nouvel écran
-    navigation.navigate('Tournoi detail'); // voir le name Tab.Screen dans stackNavigator
+    navigation.navigate("Tournoi detail"); // voir le name Tab.Screen dans stackNavigator
+  };
+
+  //Suppression complete de la liste des favoris.
+  const handleClearFavorites = () => {
+    Alert.alert(
+      "Supprimer mes tournoi",
+      "Êtes-vous sûr de vouloir supprimer votre liste de tournoi?",
+      [
+        {
+          text: "Annuler",
+          style: "cancel",
+        },
+        {
+          text: "Supprimer",
+          onPress: () => {
+            dispatch(clearUserTournaments());
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {loading && <Text>Chargement...</Text>}
       {error && <Text>{error}</Text>}
       {userTournaments?.length === 0 && !loading && !error && (
@@ -79,127 +101,42 @@ const UserTournamentList = () => {
       )}
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
-        {
-          /* console.log("Tournament pour ID", tournamentId, ":", tournament); */
-        }
-
         if (!tournament) {
           return (
             <Text key={index}>Chargement du tournoi {tournamentId}...</Text>
           );
         }
         return (
-          <TouchableOpacity
-            key={index}
-            style={styles.card}
-            onPress={() => handleTournamentClick(tournament.tournoi_id)}
-          >
-            <Image
-              source={{ uri: tournament?.imagepath }}
-              style={styles.image}
-            />
-            <Text style={styles.title}>{tournament?.name}</Text>
-            <Text style={styles.text}>{tournament?.adresse}</Text>
-            <Text style={styles.text}>
-              {moment(tournament.horaire_debut).format("HH:mm")}
-            </Text>
-            <Button
-              title="Supprimer"
-              onPress={() => handleRemoveTournament(tournament.tournoi_id)}
-            />
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              key={index}
+              style={styles.card}
+              onPress={() => handleTournamentClick(tournament.tournoi_id)}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: tournament?.imagepath }}
+                  style={styles.image}
+                  resizeMode="contain" // ou "cover" selon vos besoins
+                />
+              </View>
+              <Text style={styles.title}>{tournament?.name}</Text>
+              <Text style={styles.text}>{tournament?.adresse}</Text>
+              <Text style={styles.text}>
+                {moment.utc(tournament.horaire_debut).format("HH:mm")}
+              </Text>
+              <Button
+                title="Retirer de ma liste"
+                onPress={() => handleRemoveTournament(tournament.tournoi_id)}
+              />
+            </TouchableOpacity>
+            <Button title="Vider les favoris" onPress={handleClearFavorites} />
+          </>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
-
-// const UserTournamentList = () => {
-//   const [userTournaments, setUserTournaments] = useState([]);
-//   const dispatch = useDispatch();
-//   const tournamentDetails = useSelector((state) => state.tournoi.single);
-//   const loading = useSelector((state) => state.tournoi.loading);
-//   const error = useSelector((state) => state.tournoi.error);
-//   const [storedTournamentIds, setStoredTournamentIds] = useState([]);
-
-//   useEffect(() => {
-//     const fetchStoredTournamentIds = async () => {
-//       const ids = JSON.parse(await AsyncStorage.getItem("tournaments")) || [];
-//       setStoredTournamentIds(ids);
-//     };
-
-//     fetchStoredTournamentIds();
-//   }, []);
-
-//   useEffect(() => {
-//     storedTournamentIds.forEach((tournamentId) => {
-//       dispatch(fetchTournamentById(tournamentId));
-//     });
-//   }, [storedTournamentIds]);
-
-//   useEffect(() => {
-//     if (tournamentDetails && tournamentDetails.name) {
-//       setUserTournaments((prevTournaments) => [
-//         ...prevTournaments,
-//         tournamentDetails,
-//       ]);
-//     }
-//   }, [tournamentDetails]);
-
-//   //Fonction de suppression d'un tournoi de la liste.
-//   const handleRemoveTournament = async (tournamentId) => {
-//     Alert.alert(
-//       "Supprimer le tournoi",
-//       "Êtes-vous sûr de vouloir supprimer ce tournoi de votre liste?",
-//       [
-//         {
-//           text: "Annuler",
-//           style: "cancel",
-//         },
-//         {
-//           text: "Supprimer",
-//           onPress: async () => {
-//             const updatedTournaments = userTournaments.filter(
-//               (t) => t.tournoi_id !== tournamentId
-//             );
-//             setUserTournaments(updatedTournaments);
-//             await AsyncStorage.setItem(
-//               "tournaments",
-//               JSON.stringify(updatedTournaments.map((t) => t.tournoi_id))
-//             );
-//           },
-//         },
-//       ],
-//       { cancelable: false }
-//     );
-//   };
-
-//   //console.log("Liste des tournois de l'user", userTournaments);
-
-//   return (
-//     <View style={styles.container}>
-//       {loading && <Text>Chargement...</Text>}
-//       {error && <Text>{error}</Text>}
-//       {userTournaments.length === 0 && !loading && !error && (
-//         <Text>Vous n'avez pas de tournois.</Text>
-//       )}
-//       {userTournaments?.map((tournament, index) => (
-//         <View key={index} style={styles.card}>
-//           <Image source={{ uri: tournament?.imagepath }} style={styles.image} />
-//           <Text style={styles.title}>{tournament?.name}</Text>
-//           <Text style={styles.text}>{tournament?.adresse}</Text>
-//           <Text style={styles.text}>
-//             {moment(tournament.horaire_debut).format("HH:mm")}
-//           </Text>
-//           <Button
-//             title="Supprimer"
-//             onPress={() => handleRemoveTournament(tournament.tournoi_id)}
-//           />
-//         </View>
-//       ))}
-//     </View>
-//   );
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -216,11 +153,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
   },
-  image: {
+  imageContainer: {
     width: "100%",
     height: 200,
     borderRadius: 10,
+    overflow: "hidden", // Pour s'assurer que l'image respecte le borderRadius
     marginBottom: 15,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
   title: {
     fontSize: 18,
