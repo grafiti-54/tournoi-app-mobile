@@ -1,11 +1,11 @@
-import {  View, TextInput } from "react-native";
+import {  View, TextInput, StyleSheet } from "react-native";
 import React from "react";
 import { setSearchValue } from "../redux/features/tournoiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TournamentList from './TournamentList';
 
 //Barre de recherche en dessous du header.
-const SeacrhMenu = () => {
+const SeacrhMenu = (props) => {
   const dispatch = useDispatch();
   const searchValue = useSelector((state) => state.tournoi.searchValue);
 
@@ -15,12 +15,7 @@ const SeacrhMenu = () => {
 
   return (
     <View
-      style={{
-        backgroundColor: "#ccedff",
-        alignItems: "center",
-        justifyContent: "space-around",
-        minHeight:100
-      }}
+      style={[styles.defaultStyle, props.style]}
     >
       <View
         style={{
@@ -53,5 +48,14 @@ const SeacrhMenu = () => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  defaultStyle: {
+      backgroundColor: "#ccedff",
+      alignItems: "center",
+      justifyContent: "space-around",
+      minHeight: 100
+  }
+});
 
 export default SeacrhMenu;

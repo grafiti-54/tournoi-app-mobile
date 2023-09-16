@@ -18,6 +18,7 @@ import {
 } from "../redux/features/tournoiSlice";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
+import NoFollowTournament from "./NoFollowTournament";
 
 //Récupération de la liste des tournois suivi par l'utilisateur en favoris.
 const UserTournamentList = () => {
@@ -95,15 +96,19 @@ const UserTournamentList = () => {
   return (
     <ScrollView style={styles.container}>
       {loading && <Text>Chargement...</Text>}
-      {error && <Text>{error}</Text>}
-      {userTournaments?.length === 0  && (
-        <Text>Vous n'avez pas de tournois.</Text>
+      {/* {error && <Text>{error}</Text>} */}
+      {userTournaments?.length === 0 && (
+        <View style={{ marginTop: "43%" }}>
+          <NoFollowTournament />
+        </View>
       )}
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
         if (!tournament) {
           return (
-            <Text key={index}>Chargement du tournoi {tournamentId}...</Text>
+            <Text key={`loading-${tournamentId}`}>
+              Chargement du tournoi {tournamentId}...
+            </Text>
           );
         }
         return (
