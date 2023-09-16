@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTournamentById } from "../redux/features/tournoiSlice";
+import NoFollowTournament from "./NoFollowTournament";
 
 const InformationTournament = ({ currentTournamentId }) => {
   const dispatch = useDispatch();
@@ -15,10 +16,7 @@ const InformationTournament = ({ currentTournamentId }) => {
 
   if (!tournoi) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Vous n'avez pas commencé à suivre un tournoi</Text>
-        <Text>Veuillez scanner un QR code ou rechercher un tournoi public.</Text>
-      </View>
+      <NoFollowTournament/>
     );
   }
 

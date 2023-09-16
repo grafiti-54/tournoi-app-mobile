@@ -1,5 +1,5 @@
-import { Text, View, Animated } from "react-native";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import { Text, View, Animated, TouchableWithoutFeedback } from "react-native";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
@@ -9,6 +9,19 @@ const QRCodeScreen = () => {
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);
   const scrollRef = useRef();
+
+  useEffect(() => {
+    const unsubscribeFocus = navigation.addListener("focus", () => {
+      // Fermez le menu de recherche lorsque la page est mise au point
+      if (seacrhMenuVisible) {
+        setSeacrhMenuVisible(false);
+      }
+    });
+
+    return () => {
+      unsubscribeFocus();
+    };
+  }, [navigation, seacrhMenuVisible]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,7 +51,7 @@ const QRCodeScreen = () => {
       //Buton Loupe pour la recherche des tournois.
       headerRight: () => (
         <FontAwesome
-          name="search"
+          name={seacrhMenuVisible ? "close" : "search"}
           size={24}
           color="white"
           style={{ marginRight: 12 }}
@@ -54,11 +67,31 @@ const QRCodeScreen = () => {
     });
   }, [seacrhMenuVisible]);
 
-  return (
-    <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
-      {seacrhMenuVisible && <SeacrhMenu />}
-      <QRCodeScanner/>
-    </Animated.ScrollView>
+  const content = (
+    <View style={{ flex: 1 }}>
+      {seacrhMenuVisible && (
+        <SeacrhMenu
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1,
+          }}
+        />
+      )}
+      <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
+        <QRCodeScanner />
+      </Animated.ScrollView>
+    </View>
+  );
+
+  return seacrhMenuVisible ? (
+    <TouchableWithoutFeedback onPress={() => setSeacrhMenuVisible(false)}>
+      {content}
+    </TouchableWithoutFeedback>
+  ) : (
+    content
   );
 };
 

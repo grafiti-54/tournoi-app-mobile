@@ -2,11 +2,10 @@ import {
   Text,
   View,
   Animated,
-  Pressable,
-  ScrollView,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
@@ -17,6 +16,18 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);
   const scrollRef = useRef();
+
+  useEffect(() => {
+    const unsubscribeFocus = navigation.addListener("focus", () => {
+      // Fermez le menu de recherche lorsque la page est mise au point
+      if (seacrhMenuVisible) {
+        setSeacrhMenuVisible(false);
+      }
+    });
+    return () => {
+      unsubscribeFocus();
+    };
+  }, [navigation, seacrhMenuVisible]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -46,7 +57,7 @@ const HomeScreen = () => {
       //Buton Loupe pour la recherche des tournois.
       headerRight: () => (
         <FontAwesome
-          name="search"
+          name={seacrhMenuVisible ? "close" : "search"}
           size={24}
           color="white"
           style={{ marginRight: 12 }}
@@ -62,35 +73,80 @@ const HomeScreen = () => {
     });
   }, [seacrhMenuVisible]);
 
-  return (
-    <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
-      {seacrhMenuVisible && <SeacrhMenu />}
-      <View>
-        <View style={{ flex: 1, marginTop: 20 }}>
-          <Text>Titre</Text>
-        </View>
+
+  const content = (
+    <View style={{ flex: 1 }}>
+      {seacrhMenuVisible && (
+        <SeacrhMenu
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1,
+          }}
+        />
+      )}
+      <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
         <View
           style={{
-            flex: 1,
-            marginTop: 40,
-            justifyContent: "center",
-            alignItems: "center",
+            height: "100%",
+            display: "flex",
+            justifyContent: "space-around",
           }}
         >
-          <Image
-            style={{ width: 220, height: 250, resizeMode: "cover" }}
-            source={{
-              uri: "https://res.cloudinary.com/ddx03ty0j/image/upload/v1688817138/TOURNOI-APP_-_Logo_dliuqu.png",
+          {/* Partie 1 - titre */}
+          <View
+            style={{
+              height: "20%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 30,
             }}
-          />
+          >
+            <Text style={{ fontWeight: "bold", fontSize: 35 }}>
+              Bienvenue sur{" "}
+            </Text>
+            <Text
+              style={{ fontWeight: "bold", fontSize: 45, color: "#02a3fe" }}
+            >
+              TOURNOI-APP
+            </Text>
+          </View>
+          {/* Partie 2 - logo */}
+          <View
+            style={{
+              marginTop: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              height: "35%",
+            }}
+          >
+            <Image
+              style={{ width: 220, height: 250, resizeMode: "cover" }}
+              source={{
+                uri: "https://res.cloudinary.com/ddx03ty0j/image/upload/v1688817138/TOURNOI-APP_-_Logo_dliuqu.png",
+              }}
+            />
+          </View>
+          {/*Partie 3 - Slider de card */}
+          <View style={{ height: "40%", marginTop: 100 }}>
+            <SliderHome />
+          </View>
         </View>
-        {/* Slider de card */}
-        <View style={{ flex: 1, marginTop: 20 }}>
-          <SliderHome />
-        </View>
-      </View>
-    </Animated.ScrollView>
+      </Animated.ScrollView>
+    </View>
   );
+
+  return seacrhMenuVisible ? (
+    <TouchableWithoutFeedback onPress={() => setSeacrhMenuVisible(false)}>
+      {content}
+    </TouchableWithoutFeedback>
+  ) : (
+    content
+  );
+
 };
 
 export default HomeScreen;
