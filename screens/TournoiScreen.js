@@ -31,6 +31,7 @@ const TournoiScreen = () => {
   const [selectedComponent, setSelectedComponent] = useState("Informations");
   const dispatch = useDispatch();
   //console.log("id récupéré lors de la navigation", currentTournamentId);
+  console.log("Information du tournoi : ", tournoi);
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", () => {
@@ -107,10 +108,10 @@ const TournoiScreen = () => {
             <InformationTournament currentTournamentId={currentTournamentId} />
           )}
           {selectedComponent === "Résultats" && (
-            <ResultTournament currentTournamentId={currentTournamentId} />
+            <ResultTournament tournamentType={tournoi?.tournamentType}  currentTournamentId={currentTournamentId} />
           )}
           {selectedComponent === "Classement" && (
-            <ClassementTournament currentTournamentId={currentTournamentId} />
+            <ClassementTournament tournamentType={tournoi?.tournamentType} currentTournamentId={currentTournamentId} />
           )}
         </ScrollView>
       </Animated.ScrollView>

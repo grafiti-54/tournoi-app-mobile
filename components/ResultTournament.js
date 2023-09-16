@@ -1,12 +1,27 @@
-import React from 'react'
-import { ScrollView, Text } from 'react-native'
+import React from "react";
+import { ScrollView } from "react-native";
+import AllerRetourEliminationMatchList from "./MatchList/AllerRetourEliminationMatchList";
+import DirectEliminationMatchList from "./MatchList/DirectEliminationMatchList";
+import ChampionnatMatchList from "./MatchList/ChampionnatMatchList";
 
-const ResultTournament = ({currentTournamentId}) => {
+const ResultTournament = ({ currentTournamentId, tournamentType }) => {
+  //Récupérer le format de tournoi
+  // console.log(
+  //   "id du tournoi : ",
+  //   currentTournamentId,
+  //   "type de tournoi récupéré : ",
+  //   tournamentType
+  // );
+  //Afficher les composants selon le type de championnat récupéré.
   return (
     <ScrollView>
-        <Text>Resultat du tournoi avec l'id {currentTournamentId}</Text>
+      {tournamentType === "championnat" && <ChampionnatMatchList />}
+      {tournamentType === "elimination" && <DirectEliminationMatchList />}
+      {tournamentType === "elimination-aller-retour" && (
+        <AllerRetourEliminationMatchList />
+      )}
     </ScrollView>
-  )
-}
+  );
+};
 
-export default ResultTournament
+export default ResultTournament;
