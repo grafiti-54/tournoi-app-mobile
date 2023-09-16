@@ -10,3 +10,11 @@ export const getPublicTournaments = () =>
 
 export const getTournamentInfoById = (tournoiId) =>
   API.get(`/tournoi/infos/${tournoiId}`);
+
+
+  //Match
+  export const getAllMatch = (tournoiId) =>
+  API.get(`/match/allTournamentMatch/${tournoiId}`);
+
+  export const getMatchDetails = (matchId) =>
+  API.get(`/match/matchDetailsById/${matchId}`);
