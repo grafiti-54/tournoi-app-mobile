@@ -2,6 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
+//Composant d'affichage utilisé lorsqu'un utilisateur n'as pas de tournoi suivi.
 const NoFollowTournament = () => {
   return (
     <View
