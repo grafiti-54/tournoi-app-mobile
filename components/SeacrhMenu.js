@@ -16,9 +16,10 @@ const SeacrhMenu = () => {
   return (
     <View
       style={{
-        backgroundColor: "#02A3FE",
+        backgroundColor: "#ccedff",
         alignItems: "center",
         justifyContent: "space-around",
+        minHeight:100
       }}
     >
       <View
