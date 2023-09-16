@@ -31,7 +31,7 @@ const TournoiScreen = () => {
   const [selectedComponent, setSelectedComponent] = useState("Informations");
   const dispatch = useDispatch();
   //console.log("id récupéré lors de la navigation", currentTournamentId);
-  console.log("Information du tournoi : ", tournoi);
+  // console.log("Information du tournoi : ", tournoi);
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", () => {

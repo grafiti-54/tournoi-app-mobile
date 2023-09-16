@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView } from "react-native";
 import AllerRetourEliminationMatchList from "./MatchList/AllerRetourEliminationMatchList";
 import DirectEliminationMatchList from "./MatchList/DirectEliminationMatchList";
 import ChampionnatMatchList from "./MatchList/ChampionnatMatchList";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllMatch } from "../redux/features/matchSlice";
 
 const ResultTournament = ({ currentTournamentId, tournamentType }) => {
   //Récupérer le format de tournoi
@@ -12,10 +14,20 @@ const ResultTournament = ({ currentTournamentId, tournamentType }) => {
   //   "type de tournoi récupéré : ",
   //   tournamentType
   // );
+
+  const dispatch = useDispatch();
+
+  const matchsList = useSelector((state) => state.match.data);
+  useEffect(() => {
+    dispatch(fetchAllMatch(currentTournamentId));
+  }, [currentTournamentId, dispatch]);
+
+  //console.log(matchsList);
+
   //Afficher les composants selon le type de championnat récupéré.
   return (
     <ScrollView>
-      {tournamentType === "championnat" && <ChampionnatMatchList />}
+      {tournamentType === "championnat" && <ChampionnatMatchList matchs={matchsList} />}
       {tournamentType === "elimination" && <DirectEliminationMatchList />}
       {tournamentType === "elimination-aller-retour" && (
         <AllerRetourEliminationMatchList />
