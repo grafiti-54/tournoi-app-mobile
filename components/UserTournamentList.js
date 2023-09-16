@@ -96,7 +96,7 @@ const UserTournamentList = () => {
     <ScrollView style={styles.container}>
       {loading && <Text>Chargement...</Text>}
       {error && <Text>{error}</Text>}
-      {userTournaments?.length === 0 && !loading && !error && (
+      {userTournaments?.length === 0  && (
         <Text>Vous n'avez pas de tournois.</Text>
       )}
       {userTournaments?.map((tournamentId, index) => {
@@ -109,7 +109,7 @@ const UserTournamentList = () => {
         return (
           <>
             <TouchableOpacity
-              key={index}
+              key={tournamentId}
               style={styles.card}
               onPress={() => handleTournamentClick(tournament.tournoi_id)}
             >
@@ -130,10 +130,12 @@ const UserTournamentList = () => {
                 onPress={() => handleRemoveTournament(tournament.tournoi_id)}
               />
             </TouchableOpacity>
-            <Button title="Vider les favoris" onPress={handleClearFavorites} />
           </>
         );
       })}
+      {userTournaments?.length > 0 && (
+        <Button title="Vider les favoris" onPress={handleClearFavorites} />
+      )}
     </ScrollView>
   );
 };

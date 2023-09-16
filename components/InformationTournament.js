@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     //width: width > 600 ? width * 0.66 : width, // Ceci est une approximation pour sm et xs. Vous devrez peut-être ajuster les points de rupture.
     fontSize: 22,
-    padding: 10,
+    padding: 30,
     textAlign: "center",
     marginBottom: 35,
     marginTop: 15,

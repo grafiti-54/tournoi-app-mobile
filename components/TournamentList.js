@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserTournament,
@@ -48,10 +48,13 @@ const TournamentList = () => {
   return (
     <View
       style={{
-        backgroundColor: "white",
+        backgroundColor: "#ccedff",
         borderRadius: 5,
         width: "80%",
         alignSelf: "center",
+        marginTop: 5,
+        borderWidth: 1,
+        borderColor: "#9d9da1",
       }}
     >
       {filteredTournaments?.length > 0 ? (
@@ -59,9 +62,25 @@ const TournamentList = () => {
           <TouchableOpacity
             key={tournament.tournoi_id}
             onPress={() => handleTournamentClick(tournament.tournoi_id)}
+            style={{
+              marginBottom: 2,
+            }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ color: "black", fontSize: 16, padding: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "white",
+              }}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: tournament?.imagepath }}
+                  style={styles.image}
+                  resizeMode="contain" // ou "cover" selon vos besoins
+                />
+              </View>
+              <Text style={{ color: "black", fontSize: 14, padding: 18 }}>
                 {tournament.name}
               </Text>
             </View>
@@ -72,7 +91,7 @@ const TournamentList = () => {
           style={{
             color: "gray",
             fontSize: 16,
-            padding: 8,
+            padding: 12,
             textAlign: "center",
           }}
         >
@@ -82,5 +101,19 @@ const TournamentList = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    marginTop:15,
+    width: "20%",
+    height: 45,
+    overflow: "hidden",
+    marginBottom: 15,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+});
 
 export default TournamentList;

@@ -10,6 +10,7 @@ import React, { useLayoutEffect, useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
+import SliderHome from "../components/SliderHome";
 
 //Page d'accueil de l'application.
 const HomeScreen = () => {
@@ -64,91 +65,13 @@ const HomeScreen = () => {
   return (
     <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
       {seacrhMenuVisible && <SeacrhMenu />}
-      <ScrollView>
-        {/* Slider de card */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {/* Card 1 slider */}
-          <Pressable
-            style={{
-              width: 200,
-              height: 150,
-              marginTop: 10,
-              backgroundColor: "#003580",
-              borderRadius: 10,
-              padding: 20,
-              marginHorizontal: 20,
-            }}
-          >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 15,
-                fontWeight: "bold",
-                marginVertical: 7,
-              }}
-            >
-              Titre 1
-            </Text>
-            <Text style={{ color: "white", fontSize: 15, fontWeight: "500" }}>
-              Description 1
-            </Text>
-          </Pressable>
-          {/* Card 2 slider */}
-          <Pressable
-            style={{
-              width: 200,
-              height: 150,
-              marginTop: 10,
-              borderColor: "#E0E0E0",
-              borderWidth: 2,
-              borderRadius: 10,
-              padding: 20,
-              marginHorizontal: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "bold",
-                marginVertical: 7,
-              }}
-            >
-              Titre 2
-            </Text>
-            <Text style={{ fontSize: 15, fontWeight: "500" }}>
-              Description 2
-            </Text>
-          </Pressable>
-
-          {/* Card 3 slider */}
-          <Pressable
-            style={{
-              width: 200,
-              height: 150,
-              marginTop: 10,
-              borderColor: "#E0E0E0",
-              borderWidth: 2,
-              borderRadius: 10,
-              padding: 20,
-              marginHorizontal: 20,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "bold",
-                marginVertical: 7,
-              }}
-            >
-              Titre 3
-            </Text>
-            <Text style={{ fontSize: 15, fontWeight: "500" }}>
-              Description 3
-            </Text>
-          </Pressable>
-        </ScrollView>
-        <Pressable
+      <View>
+        <View style={{ flex: 1, marginTop: 20 }}>
+          <Text>Titre</Text>
+        </View>
+        <View
           style={{
+            flex: 1,
             marginTop: 40,
             justifyContent: "center",
             alignItems: "center",
@@ -160,8 +83,12 @@ const HomeScreen = () => {
               uri: "https://res.cloudinary.com/ddx03ty0j/image/upload/v1688817138/TOURNOI-APP_-_Logo_dliuqu.png",
             }}
           />
-        </Pressable>
-      </ScrollView>
+        </View>
+        {/* Slider de card */}
+        <View style={{ flex: 1, marginTop: 20 }}>
+          <SliderHome />
+        </View>
+      </View>
     </Animated.ScrollView>
   );
 };
