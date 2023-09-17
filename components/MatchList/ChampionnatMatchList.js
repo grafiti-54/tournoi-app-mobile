@@ -9,6 +9,7 @@ import {
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMatch } from "../../redux/features/matchSlice";
+import { FontAwesome } from "@expo/vector-icons";
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs de championnat.
 const ChampionnatMatchList = () => {
@@ -78,6 +79,9 @@ const ChampionnatMatchList = () => {
                     width: "100%",
                     justifyContent: "space-around",
                     marginVertical: 10,
+                    backgroundColor: "#f1faff",
+                    padding: 6,
+                    borderRadius: 15,
                   }}
                 >
                   {/* Date ou live du match */}
@@ -116,26 +120,43 @@ const ChampionnatMatchList = () => {
                         {match.Domicile.logopath ? (
                           <Image
                             source={{ uri: match.Domicile.logopath }}
-                            style={{ width: 20, height: 20 }}
+                            style={{
+                              width: 20,
+                              height: 20,
+                              resizeMode: "cover",
+                            }}
                           />
                         ) : null}
 
                         {/* Nom equipe dom */}
                         <View>
-                          <Text>{match.Domicile.name}</Text>
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              fontWeight:
+                                match.is_validated &&
+                                match.dom_equipe_score > match.ext_equipe_score
+                                  ? "bold"
+                                  : "normal",
+                            }}
+                          >
+                            {match.Domicile.name}
+                          </Text>
                         </View>
                       </View>
 
                       {/* Score dom */}
                       <Text
                         style={{
-                          width: 20,
+                          width: 40,
                           textAlign: "center",
                           marginRight: 10,
                         }}
                       >
                         {match.is_live || match.is_validated
                           ? match.dom_equipe_score
+                          : moment.utc(match.horaire).isValid()
+                          ? moment.utc(match.horaire).format("DD/MM")
                           : "-"}
                       </Text>
                     </View>
@@ -151,29 +172,54 @@ const ChampionnatMatchList = () => {
                       {/* Logo equipe ext */}
                       <View style={{ display: "flex", flexDirection: "row" }}>
                         {match.Exterieur.logopath ? (
-                          <Image
-                            source={{ uri: match.Exterieur.logopath }}
-                            style={{ width: 20, height: 20 }}
-                          />
+                          <View
+                            style={{
+                              width: 20,
+                              height: 20,
+                              //borderRadius: 10,
+                              //overflow: "hidden", // Pour s'assurer que l'image respecte le borderRadius
+                              marginBottom: 15,
+                            }}
+                          >
+                            <Image
+                              source={{ uri: match.Exterieur.logopath }}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                //resizeMode: "cover",
+                              }}
+                            />
+                          </View>
                         ) : null}
 
                         {/* Nom equipe ext */}
                         <View>
-                          <Text>{match.Exterieur.name}</Text>
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              fontWeight:
+                                match.is_validated &&
+                                match.ext_equipe_score > match.dom_equipe_score
+                                  ? "bold"
+                                  : "normal",
+                            }}
+                          >
+                            {match.Exterieur.name}
+                          </Text>
                         </View>
                       </View>
 
                       {/* Score ext */}
                       <Text
                         style={{
-                          width: 20,
+                          width: 40,
                           textAlign: "center",
                           marginRight: 10,
                         }}
                       >
                         {match.is_live || match.is_validated
                           ? match.ext_equipe_score
-                          : "-"}
+                          : ""}
                       </Text>
                     </View>
                   </View>
@@ -189,7 +235,7 @@ const ChampionnatMatchList = () => {
                     }}
                   >
                     <View>
-                      <Text>Info</Text>
+                      <FontAwesome name="info" size={24} color="#02a3fe" />
                     </View>
                     {/* <Image source={{ uri: "URL_DE_VOTRE_ICONE" }} style={{ width: 30, height: 30 }} /> */}
                   </TouchableOpacity>

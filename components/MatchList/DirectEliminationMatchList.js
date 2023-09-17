@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMatch } from "../../redux/features/matchSlice";
-//import blank from "../../assets/image/transparentPicture.png";
 import moment from "moment";
+import { FontAwesome } from "@expo/vector-icons";
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs à elimination direct.
 const DirectEliminationMatchList = ({ tournoiId }) => {
@@ -154,121 +160,154 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                     </Text>
                   </View>
                   {/* Container d'un match */}
-                  <View style={{ marginVertical: 5, marginHorizontal: 15 }}>
-                    {round?.map((match) => (
+
+                  {round?.map((match) => (
+                    <View
+                      key={match.index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-around",
+                        marginVertical: 10,
+                        backgroundColor: "#f1faff",
+                        padding: 6,
+                        borderRadius: 15,
+                      }}
+                    >
+                      {/* Date ou live du match */}
                       <View
-                        key={match.index}
                         style={{
+                          width: "15%",
                           display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-around",
-                          marginVertical: 10,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        {/* Date ou live du match */}
-                        <View
-                          style={{
-                            width: "15%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          {match?.is_live ? (
-                            <Text style={{ color: "red" }}>Live</Text>
-                          ) : (
+                        {match?.is_live ? (
+                          <Text style={{ color: "red" }}>Live</Text>
+                        ) : (
+                          <View>
+                            <Text style={{ fontSize: 10, fontWeight:"bold" }}>
+                              Match n°{match.index}
+                            </Text>
                             <Text>
                               {match.horaire !== "A définir" &&
                               moment.utc(match.horaire).isValid()
                                 ? moment.utc(match.horaire).format("HH:mm")
                                 : "A définir"}
                             </Text>
-                          )}
-                        </View>
-                        {/* Container des 2 équipes */}
-                        <View style={{ width: "70%", marginLeft: 8 }}>
-                          {/* Container domicile */}
+                          </View>
+                        )}
+                      </View>
+                      {/* Container des 2 équipes */}
+                      <View style={{ width: "70%", marginLeft: 8 }}>
+                        {/* Container domicile */}
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginVertical: 8,
+                          }}
+                        >
+                          {/* Logo equipe domicile */}
                           <View
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              marginVertical: 8,
-                            }}
+                            style={{ display: "flex", flexDirection: "row" }}
                           >
-                            {/* Logo equipe domicile */}
-                            <View
-                              style={{ display: "flex", flexDirection: "row" }}
-                            >
-                              {match.logo1 ? (
-                                <Image
-                                  source={{ uri: match.logo1 }}
-                                  style={{ width: 20, height: 20 }}
-                                />
-                              ) : null}
+                            {match.logo1 ? (
+                              <Image
+                                source={{ uri: match.logo1 }}
+                                style={{ width: 20, height: 20,  }}
+                              />
+                            ) : null}
 
-                              {/* Nom equipe dom */}
-                              <View>
-                                <Text>{match.team1}</Text>
-                              </View>
+                            {/* Nom equipe dom */}
+                            <View>
+                              <Text
+                                style={{
+                                  marginLeft: 10,
+                                  fontWeight:
+                                    match.is_validated &&
+                                    match.score1 > match.score2
+                                      ? "bold"
+                                      : "normal",
+                                }}
+                              >
+                                {match.team1}
+                              </Text>
                             </View>
-
-                            {/* Score dom */}
-                            <Text
-                              style={{
-                                width: 20,
-                                textAlign: "center",
-                                marginRight: 10,
-                              }}
-                            >
-                              {match.is_live || match.is_validated
-                                ? match.score1
-                                : "-"}
-                            </Text>
                           </View>
 
-                          {/* Container Extérieur */}
-                          <View
+                          {/* Score dom */}
+                          <Text
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "space-between",
+                              width: 40,
+                              textAlign: "center",
+                              marginRight: 10,
                             }}
                           >
-                            {/* Logo equipe ext */}
-                            <View
-                              style={{ display: "flex", flexDirection: "row" }}
-                            >
-                              {match.logo2 ? (
-                                <Image
-                                  source={{ uri: match.logo2 }}
-                                  style={{ width: 20, height: 20 }}
-                                />
-                              ) : null}
-
-                              {/* Nom equipe ext */}
-                              <View>
-                                <Text>{match.team2}</Text>
-                              </View>
-                            </View>
-
-                            {/* Score ext */}
-                            <Text
-                              style={{
-                                width: 20,
-                                textAlign: "center",
-                                marginRight: 10,
-                              }}
-                            >
-                              {match.is_live || match.is_validated
-                                ? match.score2
-                                : "-"}
-                            </Text>
-                          </View>
+                            {match.is_live || match.is_validated
+                              ? match.score1
+                              : moment.utc(match.horaire).isValid()
+                              ? moment.utc(match.horaire).format("DD/MM")
+                              : "-"}
+                          </Text>
                         </View>
 
-                        {/* Détail du match */}
+                        {/* Container Extérieur */}
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          {/* Logo equipe ext */}
+                          <View
+                            style={{ display: "flex", flexDirection: "row" }}
+                          >
+                            {match.logo2 ? (
+                              <Image
+                                source={{ uri: match.logo2 }}
+                                style={{ width: 20, height: 20 }}
+                              />
+                            ) : null}
+
+                            {/* Nom equipe ext */}
+                            <View>
+                              <Text
+                                style={{
+                                  marginLeft: 10,
+                                  fontWeight:
+                                    match.is_validated &&
+                                    match.score2 > match.score1
+                                      ? "bold"
+                                      : "normal",
+                                }}
+                              >
+                                {match.team2}
+                              </Text>
+                            </View>
+                          </View>
+
+                          {/* Score ext */}
+                          <Text
+                            style={{
+                              width: 40,
+                              textAlign: "center",
+                              marginRight: 10,
+                            }}
+                          >
+                            {match.is_live || match.is_validated
+                              ? match.score2
+                              : " "}
+                          </Text>
+                        </View>
+                      </View>
+
+                      {/* Détail du match */}
+                      {match.id && (
                         <TouchableOpacity
                           style={{
                             marginLeft: 10,
@@ -279,17 +318,194 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                           }}
                         >
                           <View>
-                            <Text>Info</Text>
+                          <FontAwesome name="info" size={24} color="#02a3fe" />
                           </View>
                           {/* <Image source={{ uri: "URL_DE_VOTRE_ICONE" }} style={{ width: 30, height: 30 }} /> */}
                         </TouchableOpacity>
-                      </View>
-                    ))}
-                  </View>
+                      )}
+                    </View>
+                  ))}
                 </View>
               );
             })}
           </View>
+          {/* Match pour la 3eme place */}
+          {thirdPlaceMatch && (
+            <View key={thirdPlaceMatch.index} style={{ marginVertical: 10 }}>
+              {/* Container du 3EME TOUR du tournoi  */}
+              <View
+                style={{
+                  backgroundColor: "#ccedff",
+                  width: "60%",
+                  marginTop: 15,
+                  padding: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: 18,
+                  }}
+                >
+                  {ROUND_NAMES[0]}
+                </Text>
+              </View>
+              {/* Container du match */}
+              <View>
+                <View
+                  key={thirdPlaceMatch.index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-around",
+                    marginVertical: 10,
+                    backgroundColor: "#f1faff",
+                    padding: 6,
+                    borderRadius: 15,
+                  }}
+                >
+                  {/* Date ou live du match */}
+                  <View
+                    style={{
+                      width: "15%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {thirdPlaceMatch?.is_live ? (
+                      <Text style={{ color: "red" }}>Live</Text>
+                    ) : (
+                      <Text>
+                        {thirdPlaceMatch.horaire !== "A définir" &&
+                        moment.utc(thirdPlaceMatch.horaire).isValid()
+                          ? moment.utc(thirdPlaceMatch.horaire).format("HH:mm")
+                          : "A définir"}
+                      </Text>
+                    )}
+                  </View>
+                  {/* Container des 2 équipes */}
+                  <View style={{ width: "70%", marginLeft: 8 }}>
+                    {/* Container domicile */}
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginVertical: 8,
+                      }}
+                    >
+                      {/* Logo equipe domicile */}
+                      <View style={{ display: "flex", flexDirection: "row" }}>
+                        {thirdPlaceMatch.logo1 ? (
+                          <Image
+                            source={{ uri: thirdPlaceMatch.logo1 }}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        ) : null}
+
+                        {/* Nom equipe dom */}
+                        <View>
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              fontWeight:
+                                thirdPlaceMatch.is_validated &&
+                                thirdPlaceMatch.score1 > thirdPlaceMatch.score2
+                                  ? "bold"
+                                  : "normal",
+                            }}
+                          >
+                            {thirdPlaceMatch.team1}
+                          </Text>
+                        </View>
+                      </View>
+
+                      {/* Score dom */}
+                      <Text
+                        style={{
+                          width: 20,
+                          textAlign: "center",
+                          marginRight: 10,
+                        }}
+                      >
+                        {thirdPlaceMatch.is_live || thirdPlaceMatch.is_validated
+                          ? thirdPlaceMatch.score1
+                          : "-"}
+                      </Text>
+                    </View>
+
+                    {/* Container Extérieur */}
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {/* Logo equipe ext */}
+                      <View style={{ display: "flex", flexDirection: "row" }}>
+                        {thirdPlaceMatch.logo2 ? (
+                          <Image
+                            source={{ uri: thirdPlaceMatch.logo2 }}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        ) : null}
+
+                        {/* Nom equipe ext */}
+                        <View>
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              fontWeight:
+                                thirdPlaceMatch.is_validated &&
+                                thirdPlaceMatch.score2 > thirdPlaceMatch.score1
+                                  ? "bold"
+                                  : "normal",
+                            }}
+                          >
+                            {thirdPlaceMatch.team2}
+                          </Text>
+                        </View>
+                      </View>
+
+                      {/* Score ext */}
+                      <Text
+                        style={{
+                          width: 20,
+                          textAlign: "center",
+                          marginRight: 10,
+                        }}
+                      >
+                        {thirdPlaceMatch.is_live || thirdPlaceMatch.is_validated
+                          ? thirdPlaceMatch.score2
+                          : "-"}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* Détail du match */}
+
+                  <TouchableOpacity
+                    style={{
+                      marginLeft: 10,
+                      width: "10%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <View>
+                      <FontAwesome name="info" size={24} color="#02a3fe" />
+                    </View>
+                    {/* <Image source={{ uri: "URL_DE_VOTRE_ICONE" }} style={{ width: 30, height: 30 }} /> */}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
         </>
       )}
     </View>
