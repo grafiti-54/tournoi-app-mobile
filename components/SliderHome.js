@@ -21,7 +21,7 @@ const SliderHome = () => {
         <Pressable
           style={{
             width: 200,
-            height: 150,
+            height: 200,
             marginTop: 10,
             backgroundColor: "#ccedff",
             borderRadius: 10,
@@ -34,14 +34,14 @@ const SliderHome = () => {
         >
           <AntDesign name="qrcode" size={50} color="black" />
           <Text style={{ color: "black", fontSize: 15, fontWeight: "500" }}>
-            Scannez le QR code du tournoi que vous souhaitez suivre.
+            Scannez ou recherchez le QR code du tournoi que vous souhaitez suivre.
           </Text>
         </Pressable>
         {/* Card 2 slider */}
         <Pressable
           style={{
             width: 200,
-            height: 150,
+            height: 200,
             marginTop: 10,
             backgroundColor: "white",
             borderColor: "#E0E0E0",
@@ -56,7 +56,7 @@ const SliderHome = () => {
         >
           <MaterialCommunityIcons name="tournament" size={50} color="black" />
           <Text style={{ color: "black", fontSize: 15, fontWeight: "500" }}>
-            Suivez les scores du tournoi en temps réel via l'application.
+            Suivez les scores du tournoi en temps réel via l'application TOURNOI-APP.
           </Text>
         </Pressable>
 
@@ -64,7 +64,7 @@ const SliderHome = () => {
         <Pressable
           style={{
             width: 200,
-            height: 150,
+            height: 200,
             marginTop: 10,
             backgroundColor: "#ceced0",
             borderRadius: 10,

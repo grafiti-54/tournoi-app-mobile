@@ -16,14 +16,16 @@ import {
   removeUserTournament,
   setCurrentTournamentId,
 } from "../redux/features/tournoiSlice";
-import moment from "moment";
+import moment from "moment-timezone";
 import { useNavigation } from "@react-navigation/native";
 import NoFollowTournament from "./NoFollowTournament";
+import "moment/locale/fr";
 
 //Récupération de la liste des tournois suivi par l'utilisateur en favoris.
 const UserTournamentList = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  moment.locale("fr");
 
   // Utilisez directement les tournois de l'utilisateur depuis le state Redux
   const userTournaments = useSelector((state) => state.tournoi.userTournaments);
@@ -98,10 +100,33 @@ const UserTournamentList = () => {
       {loading && <Text>Chargement...</Text>}
       {/* {error && <Text>{error}</Text>} */}
       {userTournaments?.length === 0 && (
-        <View style={{ marginTop: "43%" }}>
+        <View style={{ marginTop: "33%" }}>
           <NoFollowTournament />
         </View>
       )}
+      {userTournaments?.length > 0 && (
+    <View
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <TouchableOpacity
+        style={{ 
+          width: 200,
+          backgroundColor: "#2196F3", // Couleur de fond du bouton
+          padding: 10, // Ajoutez le padding ici
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 4, // Pour arrondir les coins si vous le souhaitez
+        }}
+        onPress={handleClearFavorites}
+      >
+        <Text style={{ color: "white", fontWeight:"bold" }}>Vider mes favoris</Text>
+      </TouchableOpacity>
+    </View>
+)}
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
         if (!tournament) {
@@ -128,7 +153,11 @@ const UserTournamentList = () => {
               <Text style={styles.title}>{tournament?.name}</Text>
               <Text style={styles.text}>{tournament?.adresse}</Text>
               <Text style={styles.text}>
-                {moment.utc(tournament.horaire_debut).format("HH:mm")}
+                {moment
+                  .utc(tournament?.horaire_debut)
+                  .tz("Europe/Paris")
+                  .format("dddd D MMMM YYYY HH:mm")}
+                {/* {moment.utc(tournament.horaire_debut).format("HH:mm")} */}
               </Text>
               <Button
                 title="Retirer de ma liste"
@@ -162,7 +191,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
-    height: 200,
+    height: 100,
     borderRadius: 10,
     overflow: "hidden", // Pour s'assurer que l'image respecte le borderRadius
     marginBottom: 15,

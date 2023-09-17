@@ -22,13 +22,13 @@ const ResultTournament = ({ currentTournamentId, tournamentType }) => {
     dispatch(fetchAllMatch(currentTournamentId));
   }, [currentTournamentId, dispatch]);
 
-  //console.log(matchsList);
+  //console.log(matchsList);  
 
   //Afficher les composants selon le type de championnat récupéré.
   return (
     <ScrollView>
       {tournamentType === "championnat" && <ChampionnatMatchList matchs={matchsList} />}
-      {tournamentType === "elimination" && <DirectEliminationMatchList />}
+      {tournamentType === "elimination" && <DirectEliminationMatchList tournoiId={currentTournamentId} />}
       {tournamentType === "elimination-aller-retour" && (
         <AllerRetourEliminationMatchList />
       )}
