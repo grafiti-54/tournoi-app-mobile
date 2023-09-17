@@ -30,7 +30,7 @@ const ResultTournament = ({ currentTournamentId, tournamentType }) => {
       {tournamentType === "championnat" && <ChampionnatMatchList matchs={matchsList} />}
       {tournamentType === "elimination" && <DirectEliminationMatchList tournoiId={currentTournamentId} />}
       {tournamentType === "elimination-aller-retour" && (
-        <AllerRetourEliminationMatchList />
+        <AllerRetourEliminationMatchList tournoiId={currentTournamentId} />
       )}
     </ScrollView>
   );
