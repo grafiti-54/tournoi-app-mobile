@@ -8,8 +8,13 @@ import {
 } from "react-native";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllMatch } from "../../redux/features/matchSlice";
+import {
+  fetchAllMatch,
+  updateMatchLiveLocally,
+} from "../../redux/features/matchSlice";
 import { FontAwesome } from "@expo/vector-icons";
+import io from "socket.io-client";
+//const serverAddress = process.env.EXPO_PUBLIC_LOCAL_API_URL;
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs de championnat.
 const ChampionnatMatchList = () => {
@@ -39,6 +44,18 @@ const ChampionnatMatchList = () => {
           return acc;
         }, {})
       : {};
+
+  //Mise a jour instantané du status en live du match avec socket io.
+  useEffect(() => {
+    const socket = io.connect(process.env.EXPO_PUBLIC_LOCAL_API_URL);
+    socket.on("liveMatchUpdated", (data) => {
+      dispatch(updateMatchLiveLocally(data));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -70,9 +87,9 @@ const ChampionnatMatchList = () => {
                   Journée {round}
                 </Text>
               </View>
-              {matchesForRound?.map((match) => (
+              {matchesForRound?.map((match, index) => (
                 <View
-                  key={match.index}
+                  key={index}
                   style={{
                     display: "flex",
                     flexDirection: "row",

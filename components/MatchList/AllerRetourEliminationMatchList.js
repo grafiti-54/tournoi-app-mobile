@@ -7,9 +7,10 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllMatch } from "../../redux/features/matchSlice";
+import { fetchAllMatch, updateMatchLiveLocally } from "../../redux/features/matchSlice";
 import moment from "moment";
 import { FontAwesome } from "@expo/vector-icons";
+import io from "socket.io-client";
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs à elimination aller-retour.
 const AllerRetourEliminationMatchList = ({ tournoiId }) => {
@@ -124,6 +125,18 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
       setTournament(tournament);
     }
   }, [data]);
+
+  //Mise a jour instantané du status en live du match avec socket io.
+  useEffect(() => {
+    const socket = io.connect(process.env.EXPO_PUBLIC_LOCAL_API_URL);
+    socket.on("liveMatchUpdated", (data) => {
+      dispatch(updateMatchLiveLocally(data));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
 
   return (
     <View style={{ flex: 1 }}>

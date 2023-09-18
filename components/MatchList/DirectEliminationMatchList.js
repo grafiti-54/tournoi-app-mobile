@@ -7,9 +7,13 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllMatch } from "../../redux/features/matchSlice";
+import {
+  fetchAllMatch,
+  updateMatchLiveLocally,
+} from "../../redux/features/matchSlice";
 import moment from "moment";
 import { FontAwesome } from "@expo/vector-icons";
+import io from "socket.io-client";
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs à elimination direct.
 const DirectEliminationMatchList = ({ tournoiId }) => {
@@ -125,6 +129,18 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
     }
   }, [data]);
 
+  //Mise a jour instantané du status en live du match avec socket io.
+  useEffect(() => {
+    const socket = io.connect(process.env.EXPO_PUBLIC_LOCAL_API_URL);
+    socket.on("liveMatchUpdated", (data) => {
+      dispatch(updateMatchLiveLocally(data));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
+
   return (
     <View style={{ flex: 1 }}>
       {loading ? (
@@ -188,7 +204,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                           <Text style={{ color: "red" }}>Live</Text>
                         ) : (
                           <View>
-                            <Text style={{ fontSize: 10, fontWeight:"bold" }}>
+                            <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                               Match n°{match.index}
                             </Text>
                             <Text>
@@ -218,7 +234,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                             {match.logo1 ? (
                               <Image
                                 source={{ uri: match.logo1 }}
-                                style={{ width: 20, height: 20,  }}
+                                style={{ width: 20, height: 20 }}
                               />
                             ) : null}
 
@@ -318,7 +334,11 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                           }}
                         >
                           <View>
-                          <FontAwesome name="info" size={24} color="#02a3fe" />
+                            <FontAwesome
+                              name="info"
+                              size={24}
+                              color="#02a3fe"
+                            />
                           </View>
                           {/* <Image source={{ uri: "URL_DE_VOTRE_ICONE" }} style={{ width: 30, height: 30 }} /> */}
                         </TouchableOpacity>
