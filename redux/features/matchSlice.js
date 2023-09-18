@@ -44,12 +44,37 @@ const matchSlice = createSlice({
     loading: false,
   },
   reducers: {
+    //Modification du status live d'un match.
     updateMatchLiveLocally: (state, action) => {
       const matchToUpdate = state.data.find(
         (match) => match.match_id === action.payload.matchId
       );
       if (matchToUpdate) {
         matchToUpdate.is_live = action.payload.isLive;
+      }
+    },
+    //Modification du score d'un match
+    updateMatchScoreLocally: (state, action) => {
+      const matchToUpdate = state.data.find(
+        (match) => match.match_id === action.payload.matchId
+      );
+      if (matchToUpdate) {
+        if (action.payload.isHomeTeam) {
+          matchToUpdate.dom_equipe_score = action.payload.newValue;
+        } else {
+          matchToUpdate.ext_equipe_score = action.payload.newValue;
+        }
+      }
+    },
+    validateMatchScoreLocally: (state, action) => {
+      // Mise à jour du score du match dans la liste
+      const matchToUpdate = state.data.find(
+        (match) => match.match_id === action.payload.matchId
+      );
+      if (matchToUpdate) {
+        matchToUpdate.dom_equipe_score = action.payload.dom_equipe_score;
+        matchToUpdate.ext_equipe_score = action.payload.ext_equipe_score;
+        matchToUpdate.is_validated = action.payload.is_validated;
       }
     },
   },
@@ -87,5 +112,6 @@ const matchSlice = createSlice({
       });
   },
 });
-export const { updateMatchLiveLocally } = matchSlice.actions;
+export const { updateMatchLiveLocally, updateMatchScoreLocally, validateMatchScoreLocally } =
+  matchSlice.actions;
 export default matchSlice.reducer;

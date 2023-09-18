@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllMatch,
   updateMatchLiveLocally,
+  updateMatchScoreLocally,
+  validateMatchScoreLocally,
 } from "../../redux/features/matchSlice";
 import moment from "moment";
 import { FontAwesome } from "@expo/vector-icons";
@@ -134,6 +136,20 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
     const socket = io.connect(process.env.EXPO_PUBLIC_LOCAL_API_URL);
     socket.on("liveMatchUpdated", (data) => {
       dispatch(updateMatchLiveLocally(data));
+    });
+    socket.on('scoreUpdated', (data) => {
+      // Mettez à jour le score du match localement
+      dispatch(updateMatchScoreLocally(data));
+    });
+    socket.on("matchScoreValidated", (data) => {
+      dispatch(
+        validateMatchScoreLocally({
+          matchId: data.match_id,
+          dom_equipe_score: data.dom_equipe_score,
+          ext_equipe_score: data.ext_equipe_score,
+          is_validated: data.is_validated,
+        })
+      );
     });
 
     return () => {
