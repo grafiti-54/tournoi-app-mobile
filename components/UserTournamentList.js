@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -97,74 +98,85 @@ const UserTournamentList = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {loading && <Text>Chargement...</Text>}
-      {/* {error && <Text>{error}</Text>} */}
+      {loading && (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
       {userTournaments?.length === 0 && (
         <View style={{ marginTop: "33%" }}>
           <NoFollowTournament />
         </View>
       )}
       {userTournaments?.length > 0 && (
-    <View
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <TouchableOpacity
-        style={{ 
-          width: 200,
-          backgroundColor: "#2196F3", // Couleur de fond du bouton
-          padding: 10, // Ajoutez le padding ici
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: 4, // Pour arrondir les coins si vous le souhaitez
-        }}
-        onPress={handleClearFavorites}
-      >
-        <Text style={{ color: "white", fontWeight:"bold" }}>Vider mes favoris</Text>
-      </TouchableOpacity>
-    </View>
-)}
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: 200,
+              backgroundColor: "#2196F3", // Couleur de fond du bouton
+              padding: 10, // Ajoutez le padding ici
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 4, // Pour arrondir les coins si vous le souhaitez
+            }}
+            onPress={handleClearFavorites}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              Vider mes favoris
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
         if (!tournament) {
           return (
-            <Text key={`loading-${tournamentId}`}>
-              Chargement du tournoi {tournamentId}...
-            </Text>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ActivityIndicator size="large" color="#0000ff" />
+            </View>
           );
         }
         return (
-          <>
-            <TouchableOpacity
-              key={tournamentId}
-              style={styles.card}
-              onPress={() => handleTournamentClick(tournament.tournoi_id)}
-            >
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: tournament?.imagepath }}
-                  style={styles.image}
-                  resizeMode="contain" // ou "cover" selon vos besoins
-                />
-              </View>
-              <Text style={styles.title}>{tournament?.name}</Text>
-              <Text style={styles.text}>{tournament?.adresse}</Text>
-              <Text style={styles.text}>
-                {moment
-                  .utc(tournament?.horaire_debut)
-                  .tz("Europe/Paris")
-                  .format("dddd D MMMM YYYY HH:mm")}
-                {/* {moment.utc(tournament.horaire_debut).format("HH:mm")} */}
-              </Text>
-              <Button
-                title="Retirer de ma liste"
-                onPress={() => handleRemoveTournament(tournament.tournoi_id)}
+          <TouchableOpacity
+            key={tournamentId}
+            style={styles.card}
+            onPress={() => handleTournamentClick(tournament.tournoi_id)}
+          >
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: tournament?.imagepath }}
+                style={styles.image}
+                resizeMode="contain" // ou "cover" selon vos besoins
               />
-            </TouchableOpacity>
-          </>
+            </View>
+            <Text style={styles.title}>{tournament?.name}</Text>
+            <Text style={styles.text}>{tournament?.adresse}</Text>
+            <Text style={styles.text}>
+              {moment
+                .utc(tournament?.horaire_debut)
+                .tz("Europe/Paris")
+                .format("dddd D MMMM YYYY HH:mm")}
+              {/* {moment.utc(tournament.horaire_debut).format("HH:mm")} */}
+            </Text>
+            <Button
+              title="Retirer de ma liste"
+              onPress={() => handleRemoveTournament(tournament.tournoi_id)}
+            />
+          </TouchableOpacity>
         );
       })}
       {userTournaments?.length > 0 && (
@@ -178,6 +190,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    marginBottom:50,
   },
   card: {
     backgroundColor: "#fff",

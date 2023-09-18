@@ -43,6 +43,16 @@ const matchSlice = createSlice({
     error: null,
     loading: false,
   },
+  reducers: {
+    updateMatchLiveLocally: (state, action) => {
+      const matchToUpdate = state.data.find(
+        (match) => match.match_id === action.payload.matchId
+      );
+      if (matchToUpdate) {
+        matchToUpdate.is_live = action.payload.isLive;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       //Récupération de la liste des matchs du tournoi
@@ -77,4 +87,5 @@ const matchSlice = createSlice({
       });
   },
 });
+export const { updateMatchLiveLocally } = matchSlice.actions;
 export default matchSlice.reducer;
