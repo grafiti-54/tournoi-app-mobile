@@ -112,7 +112,7 @@ const ChampionnatMatchList = () => {
                     width: "100%",
                     justifyContent: "space-around",
                     marginVertical: 10,
-                    backgroundColor: "#f1faff",
+                    backgroundColor: "#d9f2ff",
                     padding: 6,
                     borderRadius: 15,
                   }}
@@ -165,6 +165,7 @@ const ChampionnatMatchList = () => {
                         <View>
                           <Text
                             style={{
+                              fontSize:16,
                               marginLeft: 10,
                               fontWeight:
                                 match.is_validated &&
@@ -181,7 +182,8 @@ const ChampionnatMatchList = () => {
                       {/* Score dom */}
                       <Text
                         style={{
-                          width: 40,
+                          fontSize:16,
+                          width: 45,
                           textAlign: "center",
                           marginRight: 10,
                         }}
@@ -229,6 +231,7 @@ const ChampionnatMatchList = () => {
                         <View>
                           <Text
                             style={{
+                              fontSize:16,
                               marginLeft: 10,
                               fontWeight:
                                 match.is_validated &&
@@ -245,7 +248,8 @@ const ChampionnatMatchList = () => {
                       {/* Score ext */}
                       <Text
                         style={{
-                          width: 40,
+                          fontSize:16,
+                          width: 45,
                           textAlign: "center",
                           marginRight: 10,
                         }}
