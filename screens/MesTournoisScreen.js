@@ -88,7 +88,7 @@ const MesTournoisScreen = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 1,
+            marginTop: 26,
           }}
         >
           <Text style={{ fontWeight: "bold", fontSize: 35 }}>
