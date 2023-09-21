@@ -110,31 +110,7 @@ const UserTournamentList = () => {
           <NoFollowTournament />
         </View>
       )}
-      {userTournaments?.length > 0 && (
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              width: 200,
-              backgroundColor: "#2196F3", // Couleur de fond du bouton
-              padding: 10, // Ajoutez le padding ici
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 4, // Pour arrondir les coins si vous le souhaitez
-            }}
-            onPress={handleClearFavorites}
-          >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              Vider mes favoris
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
         if (!tournament) {
@@ -146,7 +122,7 @@ const UserTournamentList = () => {
                 alignItems: "center",
               }}
             >
-              <ActivityIndicator size="large" color="#0000ff" />
+              <ActivityIndicator size="large" color="#2196F3" />
             </View>
           );
         }
@@ -172,15 +148,42 @@ const UserTournamentList = () => {
                 .format("dddd D MMMM YYYY HH:mm")}
               {/* {moment.utc(tournament.horaire_debut).format("HH:mm")} */}
             </Text>
-            <Button
-              title="Retirer de ma liste"
-              onPress={() => handleRemoveTournament(tournament.tournoi_id)}
-            />
+            <View style={styles.buttonContainer}>
+              <Button
+                color="#2196F3"
+                style={styles.button}
+                title="Retirer ce tournoi de ma liste"
+                onPress={() => handleRemoveTournament(tournament.tournoi_id)}
+              />
+            </View>
           </TouchableOpacity>
         );
       })}
       {userTournaments?.length > 0 && (
-        <Button title="Vider les favoris" onPress={handleClearFavorites} />
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop:20,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: 200,
+              backgroundColor: "#2196F3", // Couleur de fond du bouton
+              padding: 10, // Ajoutez le padding ici
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 4, // Pour arrondir les coins si vous le souhaitez
+            }}
+            onPress={handleClearFavorites}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              Vider mes favoris
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </ScrollView>
   );
@@ -190,17 +193,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    marginBottom:50,
+    marginBottom: 50,
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#f1faff",
     marginBottom: 15,
+    marginTop: 15,
+    borderRadius: 15,
     padding: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
+    borderWidth: 2, // Ajoutez cette ligne
+    borderColor: "#2196F3", // Ajoutez cette ligne
   },
   imageContainer: {
     width: "100%",
@@ -217,10 +219,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    textAlign: "center",
+    marginBottom: 5,
   },
   text: {
     fontSize: 16,
     marginBottom: 5,
+  },
+  buttonContainer: {
+    marginTop: 10,
   },
 });
 

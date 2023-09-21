@@ -90,7 +90,7 @@ const HomeScreen = () => {
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
         <View
           style={{
-            height: "100%",
+            //height: "100%",
             display: "flex",
             justifyContent: "space-around",
           }}
@@ -98,7 +98,7 @@ const HomeScreen = () => {
           {/* Partie 1 - titre */}
           <View
             style={{
-              height: "20%",
+              //height: "20%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -117,10 +117,10 @@ const HomeScreen = () => {
           {/* Partie 2 - logo */}
           <View
             style={{
-              marginTop: 40,
+              marginTop: 20,
               justifyContent: "center",
               alignItems: "center",
-              height: "35%",
+              //height: "35%",
             }}
           >
             <Image
@@ -131,7 +131,9 @@ const HomeScreen = () => {
             />
           </View>
           {/*Partie 3 - Slider de card */}
-          <View style={{ height: "40%", marginTop: 100 }}>
+          <View style={{ 
+            //height: "40%", 
+            marginVertical: 30 }}>
             <SliderHome />
           </View>
         </View>

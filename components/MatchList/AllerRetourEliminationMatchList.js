@@ -216,12 +216,14 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                           <Text style={{ color: "red" }}>Live</Text>
                         ) : (
                           <View>
-                            <Text style={{ fontSize: 10, fontWeight:"bold" }}>
+                            <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                               Match n°{match.index}
                             </Text>
                             <Text>
-                              {match.horaire !== "A définir" &&
-                              moment.utc(match.horaire).isValid()
+                              {match.is_validated
+                                ? "Terminé"
+                                : match.horaire !== "A définir" &&
+                                  moment.utc(match.horaire).isValid()
                                 ? moment.utc(match.horaire).format("HH:mm")
                                 : "A définir"}
                             </Text>

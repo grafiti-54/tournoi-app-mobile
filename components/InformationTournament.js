@@ -3,12 +3,16 @@ import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTournamentById } from "../redux/features/tournoiSlice";
 import NoFollowTournament from "./NoFollowTournament";
+import moment from "moment-timezone";
+import "moment/locale/fr";
 
 const InformationTournament = ({ currentTournamentId }) => {
   const dispatch = useDispatch();
   const tournoi = useSelector(
     (state) => state.tournoi.data[currentTournamentId]
   );
+  moment.locale("fr");
+
   //Récupération du tournoi.
   useEffect(() => {
     dispatch(fetchTournamentById(currentTournamentId));
@@ -32,6 +36,17 @@ const InformationTournament = ({ currentTournamentId }) => {
         />
         <Text style={styles.titre}>{tournoi?.adresse}</Text>
       </View>
+      <View style={styles.card}>
+      <Text>{tournoi?.adresse}</Text>
+        <Text>{moment
+                .utc(tournoi?.horaire_debut)
+                .tz("Europe/Paris")
+                .format("dddd D MMMM YYYY HH:mm")}</Text>
+        <Text>Format du tournoi : {tournoi?.tournamentType} </Text>
+        <Text>Nombre de participants : {tournoi?.nombre_equipe} équipes </Text>
+        <Text>Durée des matchs : {tournoi?.match_duree} minutes  </Text>
+        <Text>Nombre de terrains : {tournoi?.nombre_terrain} </Text>
+      </View>
     </ScrollView>
   );
 };
@@ -46,12 +61,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 35,
     marginTop: 15,
-    backgroundColor: "#090915", // Remplacez par la couleur exacte si nécessaire
-    color: "white", // Remplacez par la couleur exacte si nécessaire
+    backgroundColor: "#090915", 
+    color: "white", 
     borderWidth: 3,
     borderRadius: 5,
-    padding: 10, // Vous devrez peut-être ajuster cette valeur
-    borderColor: "#02a3fe", // Remplacez par la couleur exacte si nécessaire
+    padding: 10, 
+    borderColor: "#02a3fe", 
     shadowColor: "rgba(2, 163, 254, 0.2)",
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
@@ -60,7 +75,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
-    height: 250,
+    height: 200,
     borderRadius: 10,
     overflow: "hidden", // Pour s'assurer que l'image respecte le borderRadius
     marginBottom: 15,
@@ -68,6 +83,18 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  card: {
+    width:"90%",
+    marginRight:"auto",
+    marginLeft:"auto",
+    backgroundColor: "#f1faff",
+    marginBottom: 15,
+    marginTop: 15,
+    borderRadius: 15,
+    padding: 20,
+    borderWidth: 2, // Ajoutez cette ligne
+    borderColor: "#2196F3", // Ajoutez cette ligne
   },
 });
 

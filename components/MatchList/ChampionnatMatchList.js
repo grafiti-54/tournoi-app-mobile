@@ -53,7 +53,7 @@ const ChampionnatMatchList = () => {
     socket.on("liveMatchUpdated", (data) => {
       dispatch(updateMatchLiveLocally(data));
     });
-    socket.on('scoreUpdated', (data) => {
+    socket.on("scoreUpdated", (data) => {
       // Mettez à jour le score du match localement
       dispatch(updateMatchScoreLocally(data));
     });
@@ -112,7 +112,7 @@ const ChampionnatMatchList = () => {
                     width: "100%",
                     justifyContent: "space-around",
                     marginVertical: 10,
-                    backgroundColor: "#d9f2ff",
+                    backgroundColor: "#f1faff",
                     padding: 6,
                     borderRadius: 15,
                   }}
@@ -130,8 +130,10 @@ const ChampionnatMatchList = () => {
                       <Text style={{ color: "red" }}>Live</Text>
                     ) : (
                       <Text>
-                        {match.horaire !== "A définir" &&
-                        moment.utc(match.horaire).isValid()
+                        {match.is_validated
+                          ? "Terminé"
+                          : match.horaire !== "A définir" &&
+                            moment.utc(match.horaire).isValid()
                           ? moment.utc(match.horaire).format("HH:mm")
                           : "A définir"}
                       </Text>
@@ -154,9 +156,9 @@ const ChampionnatMatchList = () => {
                           <Image
                             source={{ uri: match.Domicile.logopath }}
                             style={{
-                              width: 20,
-                              height: 20,
-                              resizeMode: "cover",
+                              width: 25,
+                              height: 25,
+                              resizeMode: "contain",
                             }}
                           />
                         ) : null}
@@ -165,7 +167,7 @@ const ChampionnatMatchList = () => {
                         <View>
                           <Text
                             style={{
-                              fontSize:16,
+                              fontSize: 16,
                               marginLeft: 10,
                               fontWeight:
                                 match.is_validated &&
@@ -182,7 +184,7 @@ const ChampionnatMatchList = () => {
                       {/* Score dom */}
                       <Text
                         style={{
-                          fontSize:16,
+                          fontSize: 16,
                           width: 45,
                           textAlign: "center",
                           marginRight: 10,
@@ -209,10 +211,8 @@ const ChampionnatMatchList = () => {
                         {match.Exterieur.logopath ? (
                           <View
                             style={{
-                              width: 20,
-                              height: 20,
-                              //borderRadius: 10,
-                              //overflow: "hidden", // Pour s'assurer que l'image respecte le borderRadius
+                              width: 25,
+                              height: 25,
                               marginBottom: 15,
                             }}
                           >
@@ -221,7 +221,7 @@ const ChampionnatMatchList = () => {
                               style={{
                                 width: "100%",
                                 height: "100%",
-                                //resizeMode: "cover",
+                                resizeMode: "contain",
                               }}
                             />
                           </View>
@@ -231,7 +231,7 @@ const ChampionnatMatchList = () => {
                         <View>
                           <Text
                             style={{
-                              fontSize:16,
+                              fontSize: 16,
                               marginLeft: 10,
                               fontWeight:
                                 match.is_validated &&
@@ -248,7 +248,7 @@ const ChampionnatMatchList = () => {
                       {/* Score ext */}
                       <Text
                         style={{
-                          fontSize:16,
+                          fontSize: 16,
                           width: 45,
                           textAlign: "center",
                           marginRight: 10,

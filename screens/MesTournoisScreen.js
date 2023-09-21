@@ -84,21 +84,31 @@ const MesTournoisScreen = () => {
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
         <View
           style={{
-            height: "20%",
+            //height: "100%",
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 26,
+            justifyContent: "space-around",
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 35 }}>
-            Mes tournois suivis{" "}
-          </Text>
-          <Text style={{ fontWeight: "bold", fontSize: 45, color: "#02a3fe" }}>
-            TOURNOI-APP
-          </Text>
+          <View
+            style={{
+              //height: "20%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 26,
+            }}
+          >
+            <Text style={{ fontWeight: "bold", fontSize: 35 }}>
+              Mes tournois suivis{" "}
+            </Text>
+            <Text
+              style={{ fontWeight: "bold", fontSize: 45, color: "#02a3fe" }}
+            >
+              TOURNOI-APP
+            </Text>
+          </View>
+          <UserTournamentList />
         </View>
-        <UserTournamentList />
       </Animated.ScrollView>
     </View>
   );

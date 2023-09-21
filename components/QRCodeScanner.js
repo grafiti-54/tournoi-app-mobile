@@ -58,7 +58,7 @@ export default function QRCodeScanner() {
           {
             text: "Annuler",
             onPress: () => {
-              console.log("Ajout annulé");
+              //console.log("Ajout annulé");
               setTimeout(() => {
                 setScanned(false);
               }, 2000);

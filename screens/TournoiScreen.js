@@ -102,7 +102,7 @@ const TournoiScreen = () => {
 
     return (
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
-        <HeaderTournament setSelectedComponent={setSelectedComponent} />
+        <HeaderTournament setSelectedComponent={setSelectedComponent} showClassementButton={tournoi?.tournamentType === "championnat"} />
         <ScrollView>
           {selectedComponent === "Informations" && (
             <InformationTournament currentTournamentId={currentTournamentId} />
@@ -110,7 +110,7 @@ const TournoiScreen = () => {
           {selectedComponent === "Résultats" && (
             <ResultTournament tournamentType={tournoi?.tournamentType}  currentTournamentId={currentTournamentId} />
           )}
-          {selectedComponent === "Classement" && (
+          {selectedComponent === "Classement" && tournoi?.tournamentType === "championnat" && (
             <ClassementTournament tournamentType={tournoi?.tournamentType} currentTournamentId={currentTournamentId} />
           )}
         </ScrollView>

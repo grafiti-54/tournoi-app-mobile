@@ -7,7 +7,7 @@ export const fetchPublicTournaments = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.getPublicTournaments();
-      console.log("Données renvoyées par l'API:", response.data);
+      //console.log("Données renvoyées par l'API:", response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -26,7 +26,7 @@ export const fetchTournamentById = createAsyncThunk(
     try {
       const response = await api.getTournamentInfoById(tournoiId);
       if (response.data && response.data.tournoi) {
-        console.log(response.data)
+        //console.log(response.data)
         return response.data.tournoi;
       } else {
         return rejectWithValue({ msg: "Aucun tournoi trouvé avec cet ID." });
