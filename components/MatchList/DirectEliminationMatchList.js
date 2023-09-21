@@ -137,7 +137,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
     socket.on("liveMatchUpdated", (data) => {
       dispatch(updateMatchLiveLocally(data));
     });
-    socket.on('scoreUpdated', (data) => {
+    socket.on("scoreUpdated", (data) => {
       // Mettez à jour le score du match localement
       dispatch(updateMatchScoreLocally(data));
     });
@@ -224,8 +224,10 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                               Match n°{match.index}
                             </Text>
                             <Text>
-                              {match.horaire !== "A définir" &&
-                              moment.utc(match.horaire).isValid()
+                              {match.is_validated
+                                ? "Terminé"
+                                : match.horaire !== "A définir" &&
+                                  moment.utc(match.horaire).isValid()
                                 ? moment.utc(match.horaire).format("HH:mm")
                                 : "A définir"}
                             </Text>

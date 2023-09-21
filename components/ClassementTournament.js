@@ -5,13 +5,7 @@ import AllerSimpleTableau from "./ClassementType/AllerSimpleTableau";
 import AllerRetourTableau from "./ClassementType/AllerRetourTableau";
 
 const ClassementTournament = ({ currentTournamentId, tournamentType }) => {
-  // console.log(
-  //   "id du tournoi : ",
-  //   currentTournamentId,
-  //   "type de tournoi récupéré : ",
-  //   tournamentType
-  // );
-
+  
   return (
     <ScrollView>
       {tournamentType === "championnat" && <ChampionnatClassement />}

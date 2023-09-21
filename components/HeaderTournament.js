@@ -5,7 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 //
-const HeaderTournament = ({ setSelectedComponent }) => {
+const HeaderTournament = ({ setSelectedComponent, showClassementButton }) => {
   const [activeTab, setActiveTab] = useState("Informations");
   return (
     // Container header
@@ -99,45 +99,47 @@ const HeaderTournament = ({ setSelectedComponent }) => {
           </Text>
         </Pressable>
 
-        {/*  Classement du tournoi */}
-        <Pressable
-          onPress={() => {
-            setSelectedComponent("Classement");
-            setActiveTab("Classement");
-          }}
-          style={[
-            {
-              flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 25,
-              padding: 8,
-            },
-            activeTab === "Classement"
-              ? {
-                  borderColor: "#02a3fe",
-                  borderWidth: 1,
-                  backgroundColor: "#02a3fe",
-                }
-              : {},
-          ]}
-        >
-          <FontAwesome5
-            name="table"
-            size={26}
-            color={activeTab === "Classement" ? "white" : "black"}
-          />
-          <Text
-            style={{
-              marginLeft: 8,
-              fontWeight: "bold",
-              color: "white",
-              fontSize: 15,
-              color: activeTab === "Classement" ? "white" : "black",
+        {/*  Classement du tournoi pour les tournoi de type championnat */}
+        {showClassementButton && (
+          <Pressable
+            onPress={() => {
+              setSelectedComponent("Classement");
+              setActiveTab("Classement");
             }}
+            style={[
+              {
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: 25,
+                padding: 8,
+              },
+              activeTab === "Classement"
+                ? {
+                    borderColor: "#02a3fe",
+                    borderWidth: 1,
+                    backgroundColor: "#02a3fe",
+                  }
+                : {},
+            ]}
           >
-            Classement
-          </Text>
-        </Pressable>
+            <FontAwesome5
+              name="table"
+              size={26}
+              color={activeTab === "Classement" ? "white" : "black"}
+            />
+            <Text
+              style={{
+                marginLeft: 8,
+                fontWeight: "bold",
+                color: "white",
+                fontSize: 15,
+                color: activeTab === "Classement" ? "white" : "black",
+              }}
+            >
+              Classement
+            </Text>
+          </Pressable>
+        )}
       </View>
       <View
         style={{

@@ -23,7 +23,7 @@ export default function ManualTournamentInput({ existingTournaments, setCurrentT
                 {
                     text: "Annuler",
                     onPress: () => {
-                        console.log("Ajout annulé");
+                        //console.log("Ajout annulé");
                     },
                     style: "cancel",
                 },
