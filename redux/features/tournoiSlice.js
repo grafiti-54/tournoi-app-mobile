@@ -45,19 +45,22 @@ const tournoiSlice = createSlice({
   name: "tournoi",
   initialState: {
     data: {},
-    userTournaments: [],
+    userTournaments: [], //liste des id des tournois suivi par l'utilisateur. (favoris)
     currentTournamentId: null, //id du tournoi consulté par l'utilisateur.
     error: null,
     loading: false,
     searchValue: "",
   },
   reducers: {
+    //Récupération de l'id du tournoi suivi actuellement par l'utilisateur.
     setCurrentTournamentId: (state, action) => {
       state.currentTournamentId = action.payload;
     },
+    //Champ de recherche des tournois.
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
     },
+    //Ajout d'un tournoi dans la liste des tournois suivi par l'utilisateur. (favoris)
     addUserTournament: (state, action) => {
       const tournamentIdToAdd = String(action.payload);
       if (!state.userTournaments.includes(tournamentIdToAdd)) {

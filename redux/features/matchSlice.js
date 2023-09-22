@@ -39,11 +39,19 @@ const matchSlice = createSlice({
   name: "match",
   initialState: {
     data: {},
+    userMatchs: [], //liste des id des matchs suivi par l'utilisateur.
     currentMattchId: null,
     error: null,
     loading: false,
   },
   reducers: {
+    //Ajout d'un match dans la liste des matchs suivi par l'utilisateur. (favoris/notifications)
+    addUserMatch: (state, action) => {
+      const matchtIdToAdd = String(action.payload);
+      if (!state.userMatchs.includes(matchtIdToAdd)) {
+        state.userMatchs.push(matchtIdToAdd);
+      }
+    },
     //Modification du status live d'un match.
     updateMatchLiveLocally: (state, action) => {
       const matchToUpdate = state.data.find(

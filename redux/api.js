@@ -18,3 +18,9 @@ export const getTournamentInfoById = (tournoiId) =>
 
   export const getMatchDetails = (matchId) =>
   API.get(`/match/matchDetailsById/${matchId}`);
+
+  //classement
+  export const getAllStanding = (tournoiId) =>
+  API.get(`/standing/all/${tournoiId}`);
+export const getOneStanding = (tournoiId, groupe) =>
+  API.get(`/standing/one/${tournoiId}/${groupe}`);
