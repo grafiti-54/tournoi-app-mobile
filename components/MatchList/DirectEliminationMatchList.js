@@ -584,9 +584,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                       </Text>
                     </View>
                   </View>
-
-                  {/* Ajout match dans les favoris*/}
-
+                  {/* Ajout match 3eme place dans les favoris*/}
                   <View
                     style={{ width: "10%" }}
                     onTouchEnd={(e) => {

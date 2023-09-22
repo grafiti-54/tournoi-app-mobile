@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  Modal,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllMatch, updateMatchLiveLocally, updateMatchScoreLocally, validateMatchScoreLocally } from "../../redux/features/matchSlice";
+import {
+  fetchAllMatch,
+  updateMatchLiveLocally,
+  updateMatchScoreLocally,
+  validateMatchScoreLocally,
+} from "../../redux/features/matchSlice";
 import moment from "moment";
 import { FontAwesome } from "@expo/vector-icons";
 import io from "socket.io-client";
+import MatchDetail from "../MatchDetail";
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs à elimination aller-retour.
 const AllerRetourEliminationMatchList = ({ tournoiId }) => {
@@ -133,7 +140,7 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
       dispatch(updateMatchLiveLocally(data));
     });
 
-    socket.on('scoreUpdated', (data) => {
+    socket.on("scoreUpdated", (data) => {
       // Mettez à jour le score du match localement
       dispatch(updateMatchScoreLocally(data));
     });
@@ -154,8 +161,59 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
     };
   }, [dispatch]);
 
+  //Gestion ouverture/fermeture de la modal de détail du match.
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const openModal = (match) => {
+    setModalVisible(true);
+    setSelectedMatch(match);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    //setSelectedMatch(null);
+  };
+
+  //Gestion d'ajout/suppression d'un match en favoris
+  const toggleFavorite = (event, match) => {
+    event.stopPropagation(); // Cela empêche la propagation de l'événement au composant parent
+    console.log("test");
+    // Ici, ajoutez ou supprimez le match de la liste des favoris
+    // ... votre logique pour gérer les favoris
+  };
+
   return (
     <View style={{ flex: 1 }}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <View
+            style={{
+              width: "90%",
+              height: 300,
+              backgroundColor: "white",
+              borderRadius: 10,
+              padding: 20,
+            }}
+          >
+            <TouchableOpacity
+              onPress={closeModal}
+              style={{ alignSelf: "flex-end" }}
+            >
+              <Text>Fermer</Text>
+            </TouchableOpacity>
+            <MatchDetail match={selectedMatch} />
+          </View>
+        </View>
+      </Modal>
       {loading ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -191,6 +249,7 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
 
                   {round?.map((match) => (
                     <View
+                      onTouchEnd={() => openModal(match)}
                       key={match.index}
                       style={{
                         display: "flex",
@@ -336,22 +395,33 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                         </View>
                       </View>
 
-                      {/* Détail du match */}
+                      {/* Ajout du match dans les favoris */}
                       {match.id && (
-                        <TouchableOpacity
-                          style={{
-                            marginLeft: 10,
-                            width: "10%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                        <View
+                          style={{ width: "10%" }}
+                          onTouchEnd={(e) => {
+                            e.stopPropagation();
                           }}
                         >
-                          <View>
-                          <FontAwesome name="info" size={24} color="#02a3fe" />
-                          </View>
-                          {/* <Image source={{ uri: "URL_DE_VOTRE_ICONE" }} style={{ width: 30, height: 30 }} /> */}
-                        </TouchableOpacity>
+                          <TouchableOpacity
+                            style={{
+                              marginLeft: 10,
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                            onPress={(event) => toggleFavorite(event, match)}
+                          >
+                            {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
+                            <FontAwesome
+                              style={{ marginTop: 15, marginRight: 15 }}
+                              name="star-o"
+                              size={24}
+                              color="#02a3fe"
+                            />
+                          </TouchableOpacity>
+                        </View>
                       )}
                     </View>
                   ))}
@@ -515,23 +585,32 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                       </Text>
                     </View>
                   </View>
-
-                  {/* Détail du match */}
-
-                  <TouchableOpacity
-                    style={{
-                      marginLeft: 10,
-                      width: "10%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                  {/* Ajout match 3eme place dans les favoris*/}
+                  <View
+                    style={{ width: "10%" }}
+                    onTouchEnd={(e) => {
+                      e.stopPropagation();
                     }}
                   >
-                    <View>
-                      <FontAwesome name="info" size={24} color="#02a3fe" />
-                    </View>
-                    {/* <Image source={{ uri: "URL_DE_VOTRE_ICONE" }} style={{ width: 30, height: 30 }} /> */}
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        marginLeft: 10,
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      onPress={(event) => toggleFavorite(event, match)}
+                    >
+                      {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
+                      <FontAwesome
+                        style={{ marginTop: 15, marginRight: 15 }}
+                        name="star-o"
+                        size={24}
+                        color="#02a3fe"
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
