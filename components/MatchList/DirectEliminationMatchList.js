@@ -251,14 +251,18 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                       onTouchEnd={() => openModal(match)}
                       key={match.index}
                       style={{
+                        marginLeft: "auto",
+                        marginRight: "auto",
                         display: "flex",
                         flexDirection: "row",
-                        width: "100%",
+                        width: "98%",
                         justifyContent: "space-around",
                         marginVertical: 10,
-                        backgroundColor: "#f1faff",
+                        backgroundColor: "#f0f8fd",
+                        borderColor: "#a8ddfc",
                         padding: 6,
-                        borderRadius: 15,
+                        borderRadius: 35,
+                        borderWidth: 1,
                       }}
                     >
                       {/* Date ou live du match */}
@@ -306,7 +310,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                             {match.logo1 ? (
                               <Image
                                 source={{ uri: match.logo1 }}
-                                style={{ width: 20, height: 20 }}
+                                style={{ width: 25, height: 25 }}
                               />
                             ) : null}
 
@@ -358,7 +362,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                             {match.logo2 ? (
                               <Image
                                 source={{ uri: match.logo2 }}
-                                style={{ width: 20, height: 20 }}
+                                style={{ width: 25, height: 25 }}
                               />
                             ) : null}
 
@@ -414,7 +418,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                           >
                             {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                             <FontAwesome
-                              style={{ marginTop: 15, marginRight: 15 }}
+                              style={{ marginTop: 25, marginRight: 15 }}
                               name="star-o"
                               size={24}
                               color="#02a3fe"
@@ -455,14 +459,18 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                 <View
                   key={thirdPlaceMatch.index}
                   style={{
+                    marginLeft:"auto",
+                    marginRight:"auto",
                     display: "flex",
                     flexDirection: "row",
-                    width: "100%",
+                    width: "98%",
                     justifyContent: "space-around",
                     marginVertical: 10,
-                    backgroundColor: "#f1faff",
+                    backgroundColor: "#f0f8fd",
+                    borderColor: "#a8ddfc",
                     padding: 6,
-                    borderRadius: 15,
+                    borderRadius: 35,
+                    borderWidth: 1,
                   }}
                 >
                   {/* Date ou live du match */}
@@ -501,7 +509,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                         {thirdPlaceMatch.logo1 ? (
                           <Image
                             source={{ uri: thirdPlaceMatch.logo1 }}
-                            style={{ width: 20, height: 20 }}
+                            style={{ width: 25, height: 25 }}
                           />
                         ) : null}
 
@@ -549,7 +557,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                         {thirdPlaceMatch.logo2 ? (
                           <Image
                             source={{ uri: thirdPlaceMatch.logo2 }}
-                            style={{ width: 20, height: 20 }}
+                            style={{ width: 25, height: 25 }}
                           />
                         ) : null}
 

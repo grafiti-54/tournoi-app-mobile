@@ -10,12 +10,15 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
 import SliderHome from "../components/SliderHome";
+import { useDispatch } from "react-redux";
+import { resetSearchValue } from "../redux/features/tournoiSlice";
 
 //Page d'accueil de l'application.
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);
   const scrollRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", () => {
@@ -64,6 +67,9 @@ const HomeScreen = () => {
           //Affiche/cache le sous menu de recherche lors du clic sur la loupe.
           onPress={() => {
             setSeacrhMenuVisible(!seacrhMenuVisible);
+            if (!seacrhMenuVisible) {
+              dispatch(resetSearchValue()); // Réinitialisez la valeur de recherche lorsque le menu est sur "close"
+            }
             if (scrollRef.current) {
               scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
             }
@@ -72,7 +78,6 @@ const HomeScreen = () => {
       ),
     });
   }, [seacrhMenuVisible]);
-
 
   const content = (
     <View style={{ flex: 1 }}>
@@ -131,9 +136,12 @@ const HomeScreen = () => {
             />
           </View>
           {/*Partie 3 - Slider de card */}
-          <View style={{ 
-            //height: "40%", 
-            marginVertical: 30 }}>
+          <View
+            style={{
+              //height: "40%",
+              marginVertical: 30,
+            }}
+          >
             <SliderHome />
           </View>
         </View>
@@ -148,7 +156,6 @@ const HomeScreen = () => {
   ) : (
     content
   );
-
 };
 
 export default HomeScreen;

@@ -4,12 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
 import UserTournamentList from "../components/UserTournamentList";
+import { useDispatch, useSelector } from "react-redux";
+import { resetSearchValue } from "../redux/features/tournoiSlice";
 
 //Page qui regroupe la liste des tournois de l'utilisateur.
 const MesTournoisScreen = () => {
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);
   const scrollRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", () => {
@@ -59,6 +62,9 @@ const MesTournoisScreen = () => {
           //Affiche/cache le sous menu de recherche lors du clic sur la loupe.
           onPress={() => {
             setSeacrhMenuVisible(!seacrhMenuVisible);
+            if (!seacrhMenuVisible) {
+              dispatch(resetSearchValue()); // Réinitialisez la valeur de recherche lorsque le menu est sur "close"
+            }
             if (scrollRef.current) {
               scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
             }

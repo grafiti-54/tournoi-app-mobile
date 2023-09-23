@@ -16,6 +16,8 @@ import ResultTournament from "../components/ResultTournament";
 import ClassementTournament from "../components/ClassementTournament";
 import { fetchTournamentById } from "../redux/features/tournoiSlice";
 import NoFollowTournament from "../components/NoFollowTournament";
+import { resetSearchValue } from "../redux/features/tournoiSlice";
+
 
 //Screen détails du tournoi divisé en 3 partie ( info, matchs , classements)
 const TournoiScreen = () => {
@@ -81,6 +83,9 @@ const TournoiScreen = () => {
           //Affiche/cache le sous menu de recherche lors du clic sur la loupe.
           onPress={() => {
             setSeacrhMenuVisible(!seacrhMenuVisible);
+            if (!seacrhMenuVisible) {
+              dispatch(resetSearchValue()); // Réinitialisez la valeur de recherche lorsque le menu est sur "close"
+            }
             if (scrollRef.current) {
               scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
             }

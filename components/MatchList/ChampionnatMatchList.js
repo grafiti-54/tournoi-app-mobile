@@ -158,17 +158,21 @@ const ChampionnatMatchList = () => {
               </View>
               {matchesForRound?.map((match, index) => (
                 <View
-                onTouchEnd={() => openModal(match)}
+                  onTouchEnd={() => openModal(match)}
                   key={index}
                   style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     display: "flex",
                     flexDirection: "row",
-                    width: "100%",
+                    width: "98%",
                     justifyContent: "space-around",
                     marginVertical: 10,
-                    backgroundColor: "#f1faff",
+                    backgroundColor: "#f0f8fd",
+                    borderColor: "#a8ddfc",
                     padding: 6,
-                    borderRadius: 15,
+                    borderRadius: 35,
+                    borderWidth: 1,
                   }}
                 >
                   {/* Date ou live du match */}
@@ -334,7 +338,7 @@ const ChampionnatMatchList = () => {
                     >
                       {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                       <FontAwesome
-                        style={{ marginTop: 15, marginRight: 15 }}
+                        style={{ marginTop: 25, marginRight: 15 }}
                         name="star-o"
                         size={24}
                         color="#02a3fe"

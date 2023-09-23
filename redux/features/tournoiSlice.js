@@ -60,6 +60,10 @@ const tournoiSlice = createSlice({
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
     },
+    //Remise a 0 du champ de recherche des tournois.
+    resetSearchValue: (state) => {
+      state.searchValue = '';
+    },
     //Ajout d'un tournoi dans la liste des tournois suivi par l'utilisateur. (favoris)
     addUserTournament: (state, action) => {
       const tournamentIdToAdd = String(action.payload);
@@ -126,6 +130,6 @@ const tournoiSlice = createSlice({
   },
 });
 
-export const {setCurrentTournamentId, setSearchValue, addUserTournament, removeUserTournament, clearUserTournaments } =
+export const {setCurrentTournamentId, setSearchValue,resetSearchValue, addUserTournament, removeUserTournament, clearUserTournaments,  } =
   tournoiSlice.actions;
 export default tournoiSlice.reducer;
