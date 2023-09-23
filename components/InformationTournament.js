@@ -45,6 +45,10 @@ const InformationTournament = ({ currentTournamentId }) => {
         </Text>
         <View>
           <Text>
+            <Text style={{ fontWeight: "bold" }}>Discipline:</Text>{" "}
+            {tournoi?.sport}
+          </Text>
+          <Text>
             <Text style={{ fontWeight: "bold" }}>Format du tournoi :</Text>{" "}
             {tournoi?.tournamentType}
           </Text>

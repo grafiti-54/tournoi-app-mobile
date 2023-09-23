@@ -80,9 +80,12 @@ const TournamentList = () => {
                   resizeMode="contain" // ou "cover" selon vos besoins
                 />
               </View>
-              <Text style={{ color: "black", fontSize: 14, padding: 18 }}>
-                {tournament.name}
-              </Text>
+              <View style={{width:"80%"}}>
+                <Text style={{ fontWeight:"bold", fontSize: 14 }}>
+                  {tournament.name}
+                </Text>
+                <Text style={{fontSize:12, marginTop:5}}>{tournament.adresse}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         ))
@@ -104,7 +107,7 @@ const TournamentList = () => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    marginTop:15,
+    marginTop: 15,
     width: "20%",
     height: 45,
     overflow: "hidden",
