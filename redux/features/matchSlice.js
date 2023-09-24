@@ -39,8 +39,9 @@ const matchSlice = createSlice({
   name: "match",
   initialState: {
     data: {},
+    single: [],
     userMatchs: [], //liste des id des matchs suivi par l'utilisateur.
-    currentMattchId: null,
+    currentMatchId: null,
     error: null,
     loading: false,
   },
@@ -52,7 +53,7 @@ const matchSlice = createSlice({
         state.userMatchs.push(matchtIdToAdd);
       }
     },
-    //Modification du status live d'un match.
+    //Modification du status live d'un match dans la liste.
     updateMatchLiveLocally: (state, action) => {
       const matchToUpdate = state.data.find(
         (match) => match.match_id === action.payload.matchId
@@ -60,8 +61,12 @@ const matchSlice = createSlice({
       if (matchToUpdate) {
         matchToUpdate.is_live = action.payload.isLive;
       }
+      // Mise à jour du live d'un match individuel
+      if (state.single.match_id === action.payload.matchId) {
+        state.single.is_live = action.payload.isLive;
+      }
     },
-    //Modification du score d'un match
+    //Modification du score d'un match dans la liste
     updateMatchScoreLocally: (state, action) => {
       const matchToUpdate = state.data.find(
         (match) => match.match_id === action.payload.matchId
@@ -71,6 +76,14 @@ const matchSlice = createSlice({
           matchToUpdate.dom_equipe_score = action.payload.newValue;
         } else {
           matchToUpdate.ext_equipe_score = action.payload.newValue;
+        }
+      }
+      // Mise à jour du score du match individuel
+      if (state.single.match_id === action.payload.matchId) {
+        if (action.payload.isHomeTeam) {
+          state.single.dom_equipe_score = action.payload.newValue;
+        } else {
+          state.single.ext_equipe_score = action.payload.newValue;
         }
       }
     },
@@ -83,6 +96,12 @@ const matchSlice = createSlice({
         matchToUpdate.dom_equipe_score = action.payload.dom_equipe_score;
         matchToUpdate.ext_equipe_score = action.payload.ext_equipe_score;
         matchToUpdate.is_validated = action.payload.is_validated;
+      }
+      // Mise à jour du score du match individuel
+      if (state.single.match_id === action.payload.matchId) {
+        state.single.dom_equipe_score = action.payload.dom_equipe_score;
+        state.single.ext_equipe_score = action.payload.ext_equipe_score;
+        state.single.is_validated = action.payload.is_validated;
       }
     },
   },
@@ -120,6 +139,9 @@ const matchSlice = createSlice({
       });
   },
 });
-export const { updateMatchLiveLocally, updateMatchScoreLocally, validateMatchScoreLocally } =
-  matchSlice.actions;
+export const {
+  updateMatchLiveLocally,
+  updateMatchScoreLocally,
+  validateMatchScoreLocally,
+} = matchSlice.actions;
 export default matchSlice.reducer;

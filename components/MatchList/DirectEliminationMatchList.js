@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StyleSheet,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -161,15 +162,14 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
 
   //Gestion ouverture/fermeture de la modal de détail du match.
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [selectedMatchId, setSelectedMatchId] = useState(null);
   const openModal = (match) => {
     setModalVisible(true);
-    setSelectedMatch(match);
+    setSelectedMatchId(match.id);
   };
 
   const closeModal = () => {
     setModalVisible(false);
-    //setSelectedMatch(null);
   };
 
   //Gestion d'ajout/suppression d'un match en favoris
@@ -186,31 +186,20 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onRequestClose={closeModal} 
       >
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={closeModal} 
         >
-          <View
-            style={{
-              width: "90%",
-              height: 300,
-              backgroundColor: "white",
-              borderRadius: 10,
-              padding: 20,
-            }}
-          >
-            <TouchableOpacity
-              onPress={closeModal}
-              style={{ alignSelf: "flex-end" }}
-            >
-              <Text>Fermer</Text>
+          <View style={styles.modalView}>
+            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>X</Text>
             </TouchableOpacity>
-            <MatchDetail match={selectedMatch} />
+            <MatchDetail matchId={selectedMatchId} />
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
       {loading ? (
         <View
@@ -457,10 +446,11 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
               {/* Container du match */}
               <View>
                 <View
+                  onTouchEnd={() => openModal(thirdPlaceMatch)}
                   key={thirdPlaceMatch.index}
                   style={{
-                    marginLeft:"auto",
-                    marginRight:"auto",
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     display: "flex",
                     flexDirection: "row",
                     width: "98%",
@@ -627,5 +617,32 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
     </View>
   );
 };
+
+//Style pour la modal
+const styles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur de fond semi-transparente
+  },
+  modalView: {
+    width: '90%',
+    height: 300,
+    backgroundColor: 'white', // Changez la couleur de fond ici
+    borderRadius: 10,
+    padding: 20,
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#FF5B5B', // Couleur de fond du bouton
+    borderRadius: 5, // Bord arrondi
+    padding: 10, // Espacement interne
+    marginBottom:10,
+  },
+  closeButtonText: {
+    color: 'white', // Couleur du texte du bouton
+  },
+});
 
 export default DirectEliminationMatchList;
