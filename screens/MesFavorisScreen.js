@@ -1,16 +1,28 @@
-import { Text, View, Animated, TouchableWithoutFeedback } from "react-native";
 import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
+import { Text, View, Animated, TouchableWithoutFeedback, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import SeacrhMenu from "../components/SeacrhMenu";
-import UserTournamentList from "../components/UserTournamentList";
 import { useDispatch, useSelector } from "react-redux";
 import { resetSearchValue } from "../redux/features/tournoiSlice";
+import HeaderFavoris from "./../components/HeaderFavoris";
+import MesTournoisFavoris from "../components/Favoris/MesTournoisFavoris";
+import MesMatchsFavoris from "../components/Favoris/MesMatchsFavoris";
+import NoFollowTournament from "../components/NoFollowTournament";
 
-//Page qui regroupe la liste des tournois de l'utilisateur.
-const MesTournoisScreen = () => {
+//Page qui regroupe la liste des tournois et les matchs suivi par l'utilisateur.
+const MesFavorisScreen = () => {
+
+  const currentTournamentId = useSelector(
+    (state) => state.tournoi.currentTournamentId
+  );
+  const tournoi = useSelector(
+    (state) => state.tournoi.data[currentTournamentId]
+  );
+
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState("Tournois");
   const scrollRef = useRef();
   const dispatch = useDispatch();
 
@@ -63,7 +75,7 @@ const MesTournoisScreen = () => {
           onPress={() => {
             setSeacrhMenuVisible(!seacrhMenuVisible);
             if (!seacrhMenuVisible) {
-              dispatch(resetSearchValue()); // Réinitialisez la valeur de recherche lorsque le menu est sur "close"
+              dispatch(resetSearchValue()); // Réinitialise la valeur de recherche lorsque le menu est sur "close"
             }
             if (scrollRef.current) {
               scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
@@ -74,7 +86,23 @@ const MesTournoisScreen = () => {
     });
   }, [seacrhMenuVisible]);
 
-  const content = (
+  const renderContent = () => {
+    if (!tournoi) {
+      return <NoFollowTournament />;
+    }
+
+    return (
+      <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
+        <HeaderFavoris setSelectedComponent={setSelectedComponent} />
+        <ScrollView>
+          {selectedComponent === "Tournois" && <MesTournoisFavoris />}
+          {selectedComponent === "Matchs" && <MesMatchsFavoris />}
+        </ScrollView>
+      </Animated.ScrollView>
+    );
+  };
+
+  return (
     <View style={{ flex: 1 }}>
       {seacrhMenuVisible && (
         <SeacrhMenu
@@ -87,45 +115,15 @@ const MesTournoisScreen = () => {
           }}
         />
       )}
-      <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
-        <View
-          style={{
-            //height: "100%",
-            display: "flex",
-            justifyContent: "space-around",
-          }}
-        >
-          <View
-            style={{
-              //height: "20%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 26,
-            }}
-          >
-            <Text style={{ fontWeight: "bold", fontSize: 35 }}>
-              Mes tournois suivis{" "}
-            </Text>
-            <Text
-              style={{ fontWeight: "bold", fontSize: 45, color: "#02a3fe" }}
-            >
-              TOURNOI-APP
-            </Text>
-          </View>
-          <UserTournamentList />
-        </View>
-      </Animated.ScrollView>
+      {seacrhMenuVisible ? (
+        <TouchableWithoutFeedback onPress={() => setSeacrhMenuVisible(false)}>
+          {renderContent()}
+        </TouchableWithoutFeedback>
+      ) : (
+        renderContent()
+      )}
     </View>
-  );
-
-  return seacrhMenuVisible ? (
-    <TouchableWithoutFeedback onPress={() => setSeacrhMenuVisible(false)}>
-      {content}
-    </TouchableWithoutFeedback>
-  ) : (
-    content
   );
 };
 
-export default MesTournoisScreen;
+export default MesFavorisScreen;
