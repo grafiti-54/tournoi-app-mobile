@@ -21,25 +21,25 @@ const MatchDetail = ({ matchId }) => {
   useEffect(() => {
     dispatch(fetchMatchDetails(matchId));
   }, [dispatch, matchId]);
-  console.log(matchDetails);
+  //console.log(matchDetails);
 
   useEffect(() => {
     const socket = io.connect(process.env.EXPO_PUBLIC_LOCAL_API_URL);
     socket.on("liveMatchUpdated", (data) => {
-      // Vérifiez si l'ID du match mis à jour correspond à l'ID du match actuel
+      // Vérifie si l'ID du match mis à jour correspond à l'ID du match actuel
       if (data.matchId === matchId) {
         dispatch(updateMatchLiveLocally(data));
       }
     });
     socket.on("scoreUpdated", (data) => {
-      // Vérifiez si l'ID du match mis à jour correspond à l'ID du match actuel
+      // Vérifie si l'ID du match mis à jour correspond à l'ID du match actuel
       if (data.matchId === matchId) {
         dispatch(updateMatchScoreLocally(data));
       }
     });
 
     socket.on("matchScoreValidated", (data) => {
-      // Vérifiez si l'ID du match mis à jour correspond à l'ID du match actuel
+      // Vérifie si l'ID du match mis à jour correspond à l'ID du match actuel
       if (data.matchId === matchId) {
         dispatch(
           validateMatchScoreLocally({
@@ -153,7 +153,6 @@ const MatchDetail = ({ matchId }) => {
 };
 
 const styles = StyleSheet.create({
-  // Vos styles adaptés pour React Native
   centered: {
     flex: 1,
     justifyContent: "center",
@@ -215,7 +214,7 @@ const styles = StyleSheet.create({
   },
   scoreSeparator: {
     fontSize: 24,
-    marginHorizontal: 10, // Ajoutez une marge pour espacer les scores
+    marginHorizontal: 10, 
   },
   time: {
     fontSize: 24,

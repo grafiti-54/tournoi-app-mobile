@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-//
+//Composant de navigation pour la page des tournois.
 const HeaderTournament = ({ setSelectedComponent, showClassementButton }) => {
   const [activeTab, setActiveTab] = useState("Informations");
   return (

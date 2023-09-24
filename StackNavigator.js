@@ -11,8 +11,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import HomeScreen from "./screens/HomeScreen";
 import QRCodeScreen from "./screens/QRCodeScreen";
-import MesTournoisScreen from "./screens/MesTournoisScreen";
+
 import TournoiScreen from "./screens/TournoiScreen";
+import MesFavorisScreen from './screens/MesFavorisScreen';
 
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -92,7 +93,7 @@ const StackNavigator = () => {
         />
         <Tab.Screen
           name="Favoris"
-          component={MesTournoisScreen}
+          component={MesFavorisScreen}
           options={{
             tabBarLabel: "Favoris",
             headerShown: false,
