@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { Text, TouchableOpacity, View, StyleSheet, Image } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Image, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserTournament,
@@ -9,7 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 //Affichage de la liste des tournois a venir dans le menu de recherche.
-const TournamentList = () => {
+const TournamentList = ({ onAddToFavorites }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const tournaments = useSelector((state) => state?.tournoi?.data);
@@ -37,13 +37,33 @@ const TournamentList = () => {
 
   //Récupération de l'id du tournoi et redirection vers le screen du tournoi.
   const handleTournamentClick = (tournamentId) => {
-    // Stocke l'ID du tournoi dans le store
-    dispatch(setCurrentTournamentId(tournamentId));
-    //Rajoute le tournoi dans la liste des tournoi suivi par l'utilisateur.
-    dispatch(addUserTournament(tournamentId));
-    // Navigue vers le nouvel écran
-    navigation.navigate("Tournoi detail"); // voir le name Tab.Screen dans stackNavigator
+    Alert.alert(
+      "Confirmation", // Titre de l'alerte
+      "Voulez-vous ajouter ce tournoi à votre liste de favoris?", // Message de l'alerte
+      [
+        {
+          text: "Non", // Texte du bouton pour annuler l'action
+          onPress: () => console.log("Annulé"), // Action à effectuer lors du clic sur "Non"
+          style: "cancel", // Style du bouton
+        },
+        {
+          text: "Oui", // Texte du bouton pour confirmer l'action
+          onPress: () => {
+            // Action à effectuer lors du clic sur "Oui"
+            // Stocke l'ID du tournoi dans le store
+            dispatch(setCurrentTournamentId(tournamentId));
+            // Rajoute le tournoi dans la liste des tournois suivis par l'utilisateur.
+            dispatch(addUserTournament(tournamentId));
+            // Navigue vers le nouvel écran
+            navigation.navigate("Tournoi detail");
+            onAddToFavorites && onAddToFavorites();
+          },
+        },
+      ],
+      { cancelable: false } // L'alerte n'est pas annulable en cliquant en dehors de la boîte de dialogue
+    );
   };
+  
 
   return (
     <View

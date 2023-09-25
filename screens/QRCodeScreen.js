@@ -74,6 +74,11 @@ const QRCodeScreen = () => {
     });
   }, [seacrhMenuVisible]);
 
+  // Cette fonction sera appelée lorsque l'utilisateur ajoute un tournoi à sa liste de favoris.
+  const handleAddToFavorites = () => {
+    setSeacrhMenuVisible(false);
+  };
+
   const content = (
     <View style={{ flex: 1 }}>
       {seacrhMenuVisible && (
@@ -85,6 +90,7 @@ const QRCodeScreen = () => {
             right: 0,
             zIndex: 1,
           }}
+          onAddToFavorites={handleAddToFavorites}
         />
       )}
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>

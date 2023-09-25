@@ -44,7 +44,7 @@ const SeacrhMenu = (props) => {
         onChangeText={handleSearchChange}
       />
       {/* Liste des tournois filtrés lors de la recherche*/}
-      <TournamentList />
+      <TournamentList onAddToFavorites={props.onAddToFavorites} />
     </View>
   )
 }

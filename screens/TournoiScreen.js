@@ -17,7 +17,7 @@ import ClassementTournament from "../components/ClassementTournament";
 import { fetchTournamentById } from "../redux/features/tournoiSlice";
 import NoFollowTournament from "../components/NoFollowTournament";
 import { resetSearchValue } from "../redux/features/tournoiSlice";
-
+import { fetchAllMatch } from "../redux/features/matchSlice";
 
 //Screen détails du tournoi divisé en 3 partie ( info, matchs , classements)
 const TournoiScreen = () => {
@@ -33,7 +33,7 @@ const TournoiScreen = () => {
   const [selectedComponent, setSelectedComponent] = useState("Informations");
   const dispatch = useDispatch();
   //console.log("id récupéré lors de la navigation", currentTournamentId);
-  // console.log("Information du tournoi : ", tournoi);
+  //console.log("Information du tournoi : ", tournoi);
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", () => {
@@ -95,6 +95,11 @@ const TournoiScreen = () => {
     });
   }, [seacrhMenuVisible]);
 
+  // Cette fonction sera appelée lorsque l'utilisateur ajoute un tournoi à sa liste de favoris.
+  const handleAddToFavorites = () => {
+    setSeacrhMenuVisible(false);
+  };
+
   //Vérification si récupération d'un tournoi.
   useEffect(() => {
     dispatch(fetchTournamentById(currentTournamentId));
@@ -105,19 +110,31 @@ const TournoiScreen = () => {
       return <NoFollowTournament />;
     }
 
+    // console.log(currentTournamentId);
+
     return (
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
-        <HeaderTournament setSelectedComponent={setSelectedComponent} showClassementButton={tournoi?.tournamentType === "championnat"} />
+        <HeaderTournament
+          setSelectedComponent={setSelectedComponent}
+          showClassementButton={tournoi?.tournamentType === "championnat"}
+        />
         <ScrollView>
           {selectedComponent === "Informations" && (
             <InformationTournament currentTournamentId={currentTournamentId} />
           )}
           {selectedComponent === "Résultats" && (
-            <ResultTournament tournamentType={tournoi?.tournamentType}  currentTournamentId={currentTournamentId} />
+            <ResultTournament
+              tournamentType={tournoi?.tournamentType}
+              currentTournamentId={currentTournamentId}
+            />
           )}
-          {selectedComponent === "Classement" && tournoi?.tournamentType === "championnat" && (
-            <ClassementTournament tournamentType={tournoi?.tournamentType} currentTournamentId={currentTournamentId} />
-          )}
+          {selectedComponent === "Classement" &&
+            tournoi?.tournamentType === "championnat" && (
+              <ClassementTournament
+                tournamentType={tournoi?.tournamentType}
+                currentTournamentId={currentTournamentId}
+              />
+            )}
         </ScrollView>
       </Animated.ScrollView>
     );
@@ -134,6 +151,7 @@ const TournoiScreen = () => {
             right: 0,
             zIndex: 1,
           }}
+          onAddToFavorites={handleAddToFavorites}
         />
       )}
       {seacrhMenuVisible ? (

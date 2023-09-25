@@ -1,16 +1,26 @@
 import React, { useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTournamentById } from "../redux/features/tournoiSlice";
 import NoFollowTournament from "./NoFollowTournament";
 import moment from "moment-timezone";
 import "moment/locale/fr";
 
+//Composant d'informations sur le tournoi ( date, adresse, logo ...).
 const InformationTournament = ({ currentTournamentId }) => {
   const dispatch = useDispatch();
   const tournoi = useSelector(
     (state) => state.tournoi.data[currentTournamentId]
   );
+  const loading = useSelector((state) => state.tournoi.loading);
+  const error = useSelector((state) => state.tournoi.error);
   moment.locale("fr");
 
   //Récupération du tournoi.
@@ -23,50 +33,70 @@ const InformationTournament = ({ currentTournamentId }) => {
   }
 
   return (
-    <ScrollView>
-      {/* <Text>Information du tournoi avec l'id {currentTournamentId}</Text> */}
-      <Text style={styles.titre}>{tournoi?.name}</Text>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: tournoi?.imagepath }}
-          style={styles.image}
-          resizeMode="contain" // ou "cover" selon vos besoins
-        />
-      </View>
-      <View style={styles.card}>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-          {moment
-            .utc(tournoi?.horaire_debut)
-            .tz("Europe/Paris")
-            .format("dddd D MMMM YYYY HH:mm")}
-        </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}>
-          {tournoi?.adresse}
-        </Text>
-        <View>
-          <Text>
-            <Text style={{ fontWeight: "bold" }}>Discipline:</Text>{" "}
-            {tournoi?.sport}
-          </Text>
-          <Text>
-            <Text style={{ fontWeight: "bold" }}>Format du tournoi :</Text>{" "}
-            {tournoi?.tournamentType}
-          </Text>
-          <Text>
-            <Text style={{ fontWeight: "bold" }}>Nombre de participants :</Text>{" "}
-            {tournoi?.nombre_equipe} équipes
-          </Text>
-          <Text>
-            <Text style={{ fontWeight: "bold" }}>Durée des matchs :</Text>{" "}
-            {tournoi?.match_duree} minutes
-          </Text>
-          <Text>
-            <Text style={{ fontWeight: "bold" }}>Nombre de terrains :</Text>{" "}
-            {tournoi?.nombre_terrain}
-          </Text>
+    <View style={styles.container}>
+      {loading ? (
+        <View style={styles.centered}>
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      </View>
-    </ScrollView>
+      ) : error ? (
+        <Text>Erreur: {error}</Text>
+      ) : (
+        <>
+          <ScrollView>
+            {/* <Text>Information du tournoi avec l'id {currentTournamentId}</Text> */}
+            <Text style={styles.titre}>{tournoi?.name}</Text>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: tournoi?.imagepath }}
+                style={styles.image}
+                resizeMode="contain" // ou "cover" selon vos besoins
+              />
+            </View>
+            <View style={styles.card}>
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                {moment
+                  .utc(tournoi?.horaire_debut)
+                  .tz("Europe/Paris")
+                  .format("dddd D MMMM YYYY HH:mm")}
+              </Text>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}
+              >
+                {tournoi?.adresse}
+              </Text>
+              <View>
+                <Text>
+                  <Text style={{ fontWeight: "bold" }}>Discipline:</Text>{" "}
+                  {tournoi?.sport}
+                </Text>
+                <Text>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Format du tournoi :
+                  </Text>{" "}
+                  {tournoi?.tournamentType}
+                </Text>
+                <Text>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Nombre de participants :
+                  </Text>{" "}
+                  {tournoi?.nombre_equipe} équipes
+                </Text>
+                <Text>
+                  <Text style={{ fontWeight: "bold" }}>Durée des matchs :</Text>{" "}
+                  {tournoi?.match_duree} minutes
+                </Text>
+                <Text>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Nombre de terrains :
+                  </Text>{" "}
+                  {tournoi?.nombre_terrain}
+                </Text>
+              </View>
+            </View>
+          </ScrollView>
+        </>
+      )}
+    </View>
   );
 };
 
