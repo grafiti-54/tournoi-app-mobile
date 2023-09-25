@@ -101,7 +101,7 @@ const MatchDetail = ({ matchId }) => {
                 <Text style={styles.time}>
                   {matchDetails?.horaire
                     ? moment.utc(matchDetails?.horaire).format("HH:mm")
-                    : "à définir"}
+                    : "-"}
                 </Text>
               )}
             </View>

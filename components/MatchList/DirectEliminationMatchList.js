@@ -88,6 +88,13 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
       tourney.push(nextRound);
       maxRound++;
     }
+    // // Supprimer le dernier tour si c'est un tour supplémentaire après la finale
+    if (
+      tourney[tourney.length - 1].length === 1 &&
+      tourney[tourney.length - 2].length === 2
+    ) {
+      tourney.pop();
+    }
     return tourney;
   };
 
