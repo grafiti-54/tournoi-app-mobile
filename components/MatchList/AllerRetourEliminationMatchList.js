@@ -88,6 +88,15 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
       tourney.push(nextRound);
       maxRound++;
     }
+
+    // Supprimer le dernier tour si c'est un tour supplémentaire après la finale
+    if (
+      tourney[tourney.length - 1].length === 1 &&
+      tourney[tourney.length - 2].length === 2
+    ) {
+      tourney.pop();
+    }
+
     return tourney;
   };
 
@@ -183,9 +192,6 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
     dispatch(toggleUserMatch(match.id));
     //console.log("Matchs favoris actuels:", userMatchs); // Utilisez la variable userMatchs déjà définie
   };
-  // useEffect(() => {
-  //   console.log(" ");
-  // }, [userMatchs]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -218,7 +224,7 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
         <>
           <View>
             {tournament?.map((round, roundIndex) => {
-              const roundNumber = round.length;
+              const roundNumber = round.length /2;
               return (
                 <View key={roundIndex} style={{ marginVertical: 10 }}>
                   {/* Container du tour du tournoi  */}
@@ -606,11 +612,15 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                         justifyContent: "center",
                         alignItems: "center",
                       }}
-                      onPress={(event) => toggleFavorite(event, thirdPlaceMatch)}
+                      onPress={(event) =>
+                        toggleFavorite(event, thirdPlaceMatch)
+                      }
                     >
                       <FontAwesome
                         name={
-                          userMatchs?.includes(thirdPlaceMatch.id) ? "star" : "star-o"
+                          userMatchs?.includes(thirdPlaceMatch.id)
+                            ? "star"
+                            : "star-o"
                         }
                         size={24}
                         color="#02a3fe"
