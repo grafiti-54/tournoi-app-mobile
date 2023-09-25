@@ -28,6 +28,26 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.match.loading);
 
+  // console.log(tournoiId);
+  // console.log(data);
+  //console.log(tournament);
+  // Récupérer les données des matchs lorsque 'tournoiId' change
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchAllMatch(tournoiId));
+    };
+
+    fetchData();
+  }, [tournoiId, dispatch]);
+
+  useEffect(() => {
+    if (data.length) {
+      const adaptedTeams = adaptServerData(data);
+      let tournament = generateTournament(adaptedTeams);
+      setTournament(tournament);
+    }
+  }, [data]);
+
   // Fonction pour adapter les données du serveur dans un format lisible
   const adaptServerData = (serverData) => {
     return serverData.map((match, index) => {
@@ -99,20 +119,6 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
 
     return tourney;
   };
-
-  // Récupérer les données des matchs lorsque 'tournoiId' change
-  useEffect(() => {
-    dispatch(fetchAllMatch(tournoiId));
-  }, [tournoiId, dispatch]);
-
-  // Mise à jour de l'état du tournoi lorsque les données ('data') changent
-  useEffect(() => {
-    if (data.length) {
-      const adaptedTeams = adaptServerData(data);
-      let tournament = generateTournament(adaptedTeams);
-      setTournament(tournament);
-    }
-  }, [data]);
 
   // Correspondance entre les nombres de tours et leur nom d'affichage
   const ROUND_NAMES = {
@@ -224,7 +230,7 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
         <>
           <View>
             {tournament?.map((round, roundIndex) => {
-              const roundNumber = round.length /2;
+              const roundNumber = round.length / 2;
               return (
                 <View key={roundIndex} style={{ marginVertical: 10 }}>
                   {/* Container du tour du tournoi  */}

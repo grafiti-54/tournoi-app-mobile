@@ -30,21 +30,6 @@ const MesMatchsFavoris = () => {
         justifyContent: "space-around",
       }}
     >
-      <View
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 26,
-        }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 35 }}>
-          Mes matchs suivis{" "}
-        </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 45, color: "#02a3fe" }}>
-          TOURNOI-APP
-        </Text>
-      </View>
       <UserMatchList />
     </View>
   );

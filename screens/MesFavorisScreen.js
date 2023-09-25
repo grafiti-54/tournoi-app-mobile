@@ -39,6 +39,11 @@ const MesFavorisScreen = () => {
     };
   }, [navigation, seacrhMenuVisible]);
 
+  // Cette fonction sera appelée lorsque l'utilisateur ajoute un tournoi à sa liste de favoris.
+  const handleAddToFavorites = () => {
+    setSeacrhMenuVisible(false);
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -113,6 +118,7 @@ const MesFavorisScreen = () => {
             right: 0,
             zIndex: 1,
           }}
+          onAddToFavorites={handleAddToFavorites}
         />
       )}
       {seacrhMenuVisible ? (

@@ -28,6 +28,23 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.match.loading);
 
+  // Récupérer les données des matchs lorsque 'tournoiId' change
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchAllMatch(tournoiId));
+    };
+    fetchData();
+  }, [tournoiId, dispatch]);
+
+  // Mise à jour de l'état du tournoi lorsque les données ('data') changent
+  useEffect(() => {
+    if (data.length) {
+      const adaptedTeams = adaptServerData(data);
+      let tournament = generateTournament(adaptedTeams);
+      setTournament(tournament);
+    }
+  }, [data]);
+
   // Fonction pour adapter les données du serveur dans un format lisible
   const adaptServerData = (serverData) => {
     return serverData.map((match, index) => {
@@ -88,7 +105,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
       tourney.push(nextRound);
       maxRound++;
     }
-    // // Supprimer le dernier tour si c'est un tour supplémentaire après la finale
+    // Supprimer le dernier tour si c'est un tour supplémentaire après la finale
     if (
       tourney[tourney.length - 1].length === 1 &&
       tourney[tourney.length - 2].length === 2
@@ -98,19 +115,19 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
     return tourney;
   };
 
-  // Récupérer les données des matchs lorsque 'tournoiId' change
-  useEffect(() => {
-    dispatch(fetchAllMatch(tournoiId));
-  }, [tournoiId, dispatch]);
+  // // Récupérer les données des matchs lorsque 'tournoiId' change
+  // useEffect(() => {
+  //   dispatch(fetchAllMatch(tournoiId));
+  // }, [tournoiId, dispatch]);
 
-  // Mise à jour de l'état du tournoi lorsque les données ('data') changent
-  useEffect(() => {
-    if (data.length) {
-      const adaptedTeams = adaptServerData(data);
-      let tournament = generateTournament(adaptedTeams);
-      setTournament(tournament);
-    }
-  }, [data]);
+  // // Mise à jour de l'état du tournoi lorsque les données ('data') changent
+  // useEffect(() => {
+  //   if (data.length) {
+  //     const adaptedTeams = adaptServerData(data);
+  //     let tournament = generateTournament(adaptedTeams);
+  //     setTournament(tournament);
+  //   }
+  // }, [data]);
 
   // Correspondance entre les nombres de tours et leur nom d'affichage
   const ROUND_NAMES = {
@@ -189,20 +206,18 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
     //console.log("Matchs favoris actuels:", userMatchs); // Utilisez la variable userMatchs déjà définie
   };
 
-
-
   return (
     <View style={{ flex: 1 }}>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={closeModal} 
+        onRequestClose={closeModal}
       >
         <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
-          onPress={closeModal} 
+          onPress={closeModal}
         >
           <View style={styles.modalView}>
             <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
@@ -222,7 +237,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
         <>
           <View>
             {tournament.map((round, roundIndex) => {
-              const roundNumber = round.length;
+              const roundNumber = round.length /2;
               return (
                 <View key={roundIndex} style={{ marginVertical: 10 }}>
                   {/* Container du tour du tournoi  */}
@@ -611,12 +626,16 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                         justifyContent: "center",
                         alignItems: "center",
                       }}
-                      onPress={(event) => toggleFavorite(event, thirdPlaceMatch)}
+                      onPress={(event) =>
+                        toggleFavorite(event, thirdPlaceMatch)
+                      }
                     >
                       {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                       <FontAwesome
                         name={
-                          userMatchs?.includes(thirdPlaceMatch.id) ? "star" : "star-o"
+                          userMatchs?.includes(thirdPlaceMatch.id)
+                            ? "star"
+                            : "star-o"
                         }
                         size={24}
                         color="#02a3fe"
@@ -638,26 +657,26 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur de fond semi-transparente
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Couleur de fond semi-transparente
   },
   modalView: {
-    width: '90%',
+    width: "90%",
     height: 300,
-    backgroundColor: 'white', // Changez la couleur de fond ici
+    backgroundColor: "white", // Changez la couleur de fond ici
     borderRadius: 10,
     padding: 20,
   },
   closeButton: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#FF5B5B', // Couleur de fond du bouton
+    alignSelf: "flex-end",
+    backgroundColor: "#FF5B5B", // Couleur de fond du bouton
     borderRadius: 5, // Bord arrondi
     padding: 10, // Espacement interne
-    marginBottom:10,
+    marginBottom: 10,
   },
   closeButtonText: {
-    color: 'white', // Couleur du texte du bouton
+    color: "white", // Couleur du texte du bouton
   },
 });
 

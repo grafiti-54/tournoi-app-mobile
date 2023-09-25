@@ -14,6 +14,8 @@ const ResultTournament = ({ currentTournamentId, tournamentType }) => {
     dispatch(fetchAllMatch(currentTournamentId));
   }, [currentTournamentId, dispatch]);
 
+  //console.log(currentTournamentId);
+
   //Afficher les composants selon le type de championnat récupéré.
   return (
     <ScrollView>
