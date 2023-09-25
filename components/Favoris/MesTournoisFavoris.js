@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { fetchTournamentById } from "../../redux/features/tournoiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import NoFollowTournament from "../NoFollowTournament";
 import UserTournamentList from "../UserTournamentList";
-import { useNavigation } from "@react-navigation/native";
+
 
 const MesTournoisFavoris = () => {
   const currentTournamentId = useSelector(

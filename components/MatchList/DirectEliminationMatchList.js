@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllMatch,
+  toggleUserMatch,
   updateMatchLiveLocally,
   updateMatchScoreLocally,
   validateMatchScoreLocally,
@@ -173,12 +174,15 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
   };
 
   //Gestion d'ajout/suppression d'un match en favoris
+  const userMatchs = useSelector((state) => state.match.userMatchs);
   const toggleFavorite = (event, match) => {
-    event.stopPropagation(); // Cela empêche la propagation de l'événement au composant parent
-    console.log("test");
-    // Ici, ajoutez ou supprimez le match de la liste des favoris
-    // ... votre logique pour gérer les favoris
+    event.stopPropagation();
+    //console.log("Toggle match avec ID:", match.match_id);
+    dispatch(toggleUserMatch(match.id));
+    //console.log("Matchs favoris actuels:", userMatchs); // Utilisez la variable userMatchs déjà définie
   };
+
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -387,7 +391,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                         </View>
                       </View>
 
-                      {/* Match favoris */}
+                      {/* Ajout/suppression d'un match dans la liste des favoris de l'utilisateur */}
                       {match.id && (
                         <View
                           style={{ width: "10%" }}
@@ -405,12 +409,15 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                             }}
                             onPress={(event) => toggleFavorite(event, match)}
                           >
-                            {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                             <FontAwesome
-                              style={{ marginTop: 25, marginRight: 15 }}
-                              name="star-o"
+                              name={
+                                userMatchs?.includes(match.id)
+                                  ? "star"
+                                  : "star-o"
+                              }
                               size={24}
                               color="#02a3fe"
+                              style={{ marginTop: 22, marginRight: 15 }}
                             />
                           </TouchableOpacity>
                         </View>
@@ -597,14 +604,16 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
                         justifyContent: "center",
                         alignItems: "center",
                       }}
-                      onPress={(event) => toggleFavorite(event, match)}
+                      onPress={(event) => toggleFavorite(event, thirdPlaceMatch)}
                     >
                       {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                       <FontAwesome
-                        style={{ marginTop: 15, marginRight: 15 }}
-                        name="star-o"
+                        name={
+                          userMatchs?.includes(thirdPlaceMatch.id) ? "star" : "star-o"
+                        }
                         size={24}
                         color="#02a3fe"
+                        style={{ marginTop: 22, marginRight: 15 }}
                       />
                     </TouchableOpacity>
                   </View>
