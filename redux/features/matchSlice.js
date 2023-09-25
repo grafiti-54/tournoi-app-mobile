@@ -47,11 +47,20 @@ const matchSlice = createSlice({
   },
   reducers: {
     //Ajout d'un match dans la liste des matchs suivi par l'utilisateur. (favoris/notifications)
-    addUserMatch: (state, action) => {
-      const matchtIdToAdd = String(action.payload);
-      if (!state.userMatchs.includes(matchtIdToAdd)) {
-        state.userMatchs.push(matchtIdToAdd);
+    toggleUserMatch: (state, action) => {
+      //console.log("Action reçue:", action);
+      const matchId = action.payload;
+      const index = state.userMatchs.indexOf(matchId);
+      if (index >= 0) {
+        // Si le match est déjà dans les favoris, le supprimer
+        state.userMatchs.splice(index, 1);
+      } else {
+        // Sinon, l'ajouter aux favoris
+        state.userMatchs.push(matchId);
       }
+    },
+    clearUserMatchs: (state) => {
+      state.userMatchs = []; // Réinitialisez le tableau des matchs suivis par l'utilisateur
     },
     //Modification du status live d'un match dans la liste.
     updateMatchLiveLocally: (state, action) => {
@@ -122,26 +131,33 @@ const matchSlice = createSlice({
           ? action.payload.msg
           : "Une erreur inconnue est survenue.";
       })
+    
       // Récupération des détails d'un match spécifique
-      .addCase(fetchMatchDetails.pending, (state) => {
+       .addCase(fetchMatchDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchMatchDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.single = action.payload; // Mettre à jour le state avec les détails du match
+      //state.data[action.payload.match_id] = action.payload;
+      
       })
       .addCase(fetchMatchDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload
           ? action.payload.msg
           : "Une erreur inconnue est survenue.";
-      });
+      })
+      ;
   },
 });
 export const {
   updateMatchLiveLocally,
   updateMatchScoreLocally,
   validateMatchScoreLocally,
+  toggleUserMatch,
+  clearUserMatchs,
+  
 } = matchSlice.actions;
 export default matchSlice.reducer;

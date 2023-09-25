@@ -34,7 +34,7 @@ const UserTournamentList = () => {
   const loading = useSelector((state) => state.tournoi.loading);
   const error = useSelector((state) => state.tournoi.error);
 
-  // console.log("userTournaments", userTournaments);
+  //console.log("userTournaments", userTournaments);
   // console.log("tournamentsData", tournamentsData);
 
   useEffect(() => {

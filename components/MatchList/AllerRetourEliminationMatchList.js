@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllMatch,
+  toggleUserMatch,
   updateMatchLiveLocally,
   updateMatchScoreLocally,
   validateMatchScoreLocally,
@@ -175,12 +176,16 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
   };
 
   //Gestion d'ajout/suppression d'un match en favoris
+  const userMatchs = useSelector((state) => state.match.userMatchs);
   const toggleFavorite = (event, match) => {
-    event.stopPropagation(); // Cela empêche la propagation de l'événement au composant parent
-    console.log("test");
-    // Ici, ajoutez ou supprimez le match de la liste des favoris
-    // ... votre logique pour gérer les favoris
+    event.stopPropagation();
+    //console.log("Toggle match avec ID:", match.match_id);
+    dispatch(toggleUserMatch(match.id));
+    //console.log("Matchs favoris actuels:", userMatchs); // Utilisez la variable userMatchs déjà définie
   };
+  // useEffect(() => {
+  //   console.log(" ");
+  // }, [userMatchs]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -188,12 +193,12 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={closeModal} 
+        onRequestClose={closeModal}
       >
         <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
-          onPress={closeModal} 
+          onPress={closeModal}
         >
           <View style={styles.modalView}>
             <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
@@ -212,7 +217,7 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
       ) : (
         <>
           <View>
-            {tournament.map((round, roundIndex) => {
+            {tournament?.map((round, roundIndex) => {
               const roundNumber = round.length;
               return (
                 <View key={roundIndex} style={{ marginVertical: 10 }}>
@@ -388,7 +393,7 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                         </View>
                       </View>
 
-                      {/* Ajout du match dans les favoris */}
+                      {/* Ajout/suppression d'un match dans la liste des favoris de l'utilisateur */}
                       {match.id && (
                         <View
                           style={{ width: "10%" }}
@@ -406,12 +411,15 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                             }}
                             onPress={(event) => toggleFavorite(event, match)}
                           >
-                            {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                             <FontAwesome
-                              style={{ marginTop: 25, marginRight: 15 }}
-                              name="star-o"
+                              name={
+                                userMatchs?.includes(match.id)
+                                  ? "star"
+                                  : "star-o"
+                              }
                               size={24}
                               color="#02a3fe"
+                              style={{ marginTop: 22, marginRight: 15 }}
                             />
                           </TouchableOpacity>
                         </View>
@@ -447,11 +455,11 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
               {/* Container du match */}
               <View>
                 <View
-                onTouchEnd={() => openModal(thirdPlaceMatch)}
+                  onTouchEnd={() => openModal(thirdPlaceMatch)}
                   key={thirdPlaceMatch.index}
                   style={{
-                    marginLeft:"auto",
-                    marginRight:"auto",
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     display: "flex",
                     flexDirection: "row",
                     width: "98%",
@@ -598,14 +606,15 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
                         justifyContent: "center",
                         alignItems: "center",
                       }}
-                      onPress={(event) => toggleFavorite(event, match)}
+                      onPress={(event) => toggleFavorite(event, thirdPlaceMatch)}
                     >
-                      {/* <FontAwesome name="star" size={24} color="#02a3fe" /> */}
                       <FontAwesome
-                        style={{ marginTop: 25, marginRight: 15 }}
-                        name="star-o"
+                        name={
+                          userMatchs?.includes(thirdPlaceMatch.id) ? "star" : "star-o"
+                        }
                         size={24}
                         color="#02a3fe"
+                        style={{ marginTop: 22, marginRight: 15 }}
                       />
                     </TouchableOpacity>
                   </View>
@@ -623,26 +632,26 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur de fond semi-transparente
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Couleur de fond semi-transparente
   },
   modalView: {
-    width: '90%',
+    width: "90%",
     height: 300,
-    backgroundColor: 'white', // Changez la couleur de fond ici
+    backgroundColor: "white", // Changez la couleur de fond ici
     borderRadius: 10,
     padding: 20,
   },
   closeButton: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#FF5B5B', // Couleur de fond du bouton
+    alignSelf: "flex-end",
+    backgroundColor: "#FF5B5B", // Couleur de fond du bouton
     borderRadius: 5, // Bord arrondi
     padding: 10, // Espacement interne
-    marginBottom:10,
+    marginBottom: 10,
   },
   closeButtonText: {
-    color: 'white', // Couleur du texte du bouton
+    color: "white", // Couleur du texte du bouton
   },
 });
 
