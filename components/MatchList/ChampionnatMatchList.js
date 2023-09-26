@@ -20,6 +20,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import io from "socket.io-client";
 import MatchDetail from "../MatchDetail";
+import { GlobalStyle } from "../styles/GlobalStyle";
 //const serverAddress = process.env.EXPO_PUBLIC_LOCAL_API_URL;
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs de championnat.
@@ -134,12 +135,15 @@ const ChampionnatMatchList = () => {
           {Object.entries(matchsByRound)?.map(([round, matchesForRound]) => (
             <View key={round} style={{ marginVertical: 10 }}>
               <View
-                style={{
-                  backgroundColor: "#ccedff",
-                  width: "60%",
-                  marginTop: 15,
-                  padding: 5,
-                }}
+                style={[
+                  GlobalStyle.shadow,
+                  {
+                    backgroundColor: "#ccedff",
+                    width: "60%",
+                    marginTop: 15,
+                    padding: 5,
+                  },
+                ]}
               >
                 <Text
                   style={{
@@ -155,20 +159,10 @@ const ChampionnatMatchList = () => {
                 <View
                   onTouchEnd={() => openModal(match)}
                   key={index}
-                  style={{
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "98%",
-                    justifyContent: "space-around",
-                    marginVertical: 10,
-                    backgroundColor: "#f0f8fd",
-                    borderColor: "#a8ddfc",
-                    padding: 6,
-                    borderRadius: 35,
-                    borderWidth: 1,
-                  }}
+                  style={[
+                    GlobalStyle.shadow,
+                    GlobalStyle.matchContainer,
+                  ]}
                 >
                   {/* Date ou live du match */}
                   <View

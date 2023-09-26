@@ -12,6 +12,7 @@ import { fetchTournamentById } from "../redux/features/tournoiSlice";
 import NoFollowTournament from "./NoFollowTournament";
 import moment from "moment-timezone";
 import "moment/locale/fr";
+import { GlobalStyle } from "./styles/GlobalStyle";
 
 //Composant d'informations sur le tournoi ( date, adresse, logo ...).
 const InformationTournament = ({ currentTournamentId }) => {
@@ -38,8 +39,6 @@ const InformationTournament = ({ currentTournamentId }) => {
         <View style={styles.centered}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      ) : error ? (
-        <Text>Erreur: {error}</Text>
       ) : (
         <>
           <ScrollView>
@@ -52,7 +51,7 @@ const InformationTournament = ({ currentTournamentId }) => {
                 resizeMode="contain" // ou "cover" selon vos besoins
               />
             </View>
-            <View style={styles.card}>
+            <View style={[GlobalStyle.shadow, styles.card]}>
               <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                 {moment
                   .utc(tournoi?.horaire_debut)

@@ -21,6 +21,8 @@ import moment from "moment-timezone";
 import { useNavigation } from "@react-navigation/native";
 import NoFollowTournament from "./NoFollowTournament";
 import "moment/locale/fr";
+import { GlobalStyle } from "./styles/GlobalStyle";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 //Récupération de la liste des tournois suivi par l'utilisateur en favoris.
 const UserTournamentList = () => {
@@ -110,7 +112,7 @@ const UserTournamentList = () => {
           <NoFollowTournament />
         </View>
       )}
-      
+
       {userTournaments?.map((tournamentId, index) => {
         const tournament = tournamentsData[tournamentId];
         if (!tournament) {
@@ -129,9 +131,23 @@ const UserTournamentList = () => {
         return (
           <TouchableOpacity
             key={tournamentId}
-            style={styles.card}
+            style={[GlobalStyle.shadow, styles.card]}
             onPress={() => handleTournamentClick(tournament.tournoi_id)}
           >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row-reverse",
+                marginVertical: 1,
+              }}
+            >
+              <MaterialCommunityIcons
+                name="delete-alert-outline"
+                size={34}
+                color="#2196F3"
+                onPress={() => handleRemoveTournament(tournament.tournoi_id)}
+              />
+            </View>
             <View style={styles.imageContainer}>
               <Image
                 source={{ uri: tournament?.imagepath }}
@@ -148,14 +164,7 @@ const UserTournamentList = () => {
                 .format("dddd D MMMM YYYY HH:mm")}
               {/* {moment.utc(tournament.horaire_debut).format("HH:mm")} */}
             </Text>
-            <View style={styles.buttonContainer}>
-              <Button
-                color="#2196F3"
-                style={styles.button}
-                title="Retirer ce tournoi de ma liste"
-                onPress={() => handleRemoveTournament(tournament.tournoi_id)}
-              />
-            </View>
+            {/* <View style={styles.buttonContainer}> */}
           </TouchableOpacity>
         );
       })}
@@ -165,22 +174,21 @@ const UserTournamentList = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            marginTop:20,
+            marginTop: 20,
           }}
         >
           <TouchableOpacity
             style={{
-              width: 200,
-              backgroundColor: "#2196F3", // Couleur de fond du bouton
-              padding: 10, // Ajoutez le padding ici
-              justifyContent: "center",
+              backgroundColor: "red", // ou une autre couleur
+              padding: 20, // ajoutez le padding ici
               alignItems: "center",
-              borderRadius: 4, // Pour arrondir les coins si vous le souhaitez
+              justifyContent: "center",
+              borderRadius: 50,
             }}
             onPress={handleClearFavorites}
           >
             <Text style={{ color: "white", fontWeight: "bold" }}>
-              Vider mes favoris
+              Supprimer tous les tournois suivis
             </Text>
           </TouchableOpacity>
         </View>
