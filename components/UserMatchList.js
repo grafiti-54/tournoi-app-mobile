@@ -25,6 +25,7 @@ import io from "socket.io-client";
 import MatchDetail from "./MatchDetail";
 import NoFollowMatch from "./NoFollowMatch";
 import moment from "moment";
+import { GlobalStyle } from "./styles/GlobalStyle";
 
 const UserMatchList = () => {
   const dispatch = useDispatch();
@@ -152,7 +153,7 @@ const UserMatchList = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginTop: 26,
+              marginVertical: 26,
             }}
           >
             <Text style={{ fontWeight: "bold", fontSize: 35 }}>
@@ -168,20 +169,7 @@ const UserMatchList = () => {
             <View
               onTouchEnd={() => openModal(match)}
               key={index}
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                display: "flex",
-                flexDirection: "row",
-                width: "98%",
-                justifyContent: "space-around",
-                marginVertical: 10,
-                backgroundColor: "#f0f8fd",
-                borderColor: "#a8ddfc",
-                padding: 6,
-                borderRadius: 35,
-                borderWidth: 1,
-              }}
+              style={[GlobalStyle.shadow, GlobalStyle.matchContainer]}
             >
               {/* Date ou live du match */}
               <View
@@ -360,10 +348,29 @@ const UserMatchList = () => {
       {userMatchs?.length === 0 ? (
         <Text></Text>
       ) : (
-        <Button
-          title="Supprimer tous les matchs suivis"
-          onPress={handleClearUserMatchs}
-        />
+        <View
+          style={{
+            width: "80%",
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginVertical: 35,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "red", // ou une autre couleur
+              padding: 20, // ajoutez le padding ici
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 50,
+            }}
+            onPress={handleClearUserMatchs}
+          >
+            <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
+              Supprimer tous les matchs suivis
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );

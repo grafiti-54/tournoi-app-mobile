@@ -3,6 +3,7 @@ import { Text, View, Image, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllStanding } from "../../redux/features/classementSlice";
 import { useEffect } from "react";
+import { GlobalStyle } from "../styles/GlobalStyle";
 
 const ChampionnatClassement = ({ group, groupId, tournoiId }) => {
   const dispatch = useDispatch();
@@ -15,12 +16,15 @@ const ChampionnatClassement = ({ group, groupId, tournoiId }) => {
   return (
     <View style={{ marginBottom: 20 }}>
       <View
-        style={{
-          backgroundColor: "#ccedff",
-          width: "60%",
-          marginVertical: 15,
-          padding: 5,
-        }}
+        style={[
+          GlobalStyle.shadow,
+          {
+            backgroundColor: "#ccedff",
+            width: "60%",
+            marginVertical: 15,
+            padding: 5,
+          },
+        ]}
       >
         <Text
           style={{
