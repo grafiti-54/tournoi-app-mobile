@@ -24,3 +24,8 @@ export const getTournamentInfoById = (tournoiId) =>
   API.get(`/standing/all/${tournoiId}`);
 export const getOneStanding = (tournoiId, groupe) =>
   API.get(`/standing/one/${tournoiId}/${groupe}`);
+
+
+  //Notification
+  export const subscribeToMatchNotifications = (matchId, token) =>
+  API.patch(`/favoris/updateFavoris`, { matchId, token });

@@ -21,6 +21,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import io from "socket.io-client";
 import MatchDetail from "../MatchDetail";
 import { GlobalStyle } from "../styles/GlobalStyle";
+import registerForPushNotificationsAsync from "../../services/notificationService";
+import { handleUserNotification } from "../../redux/features/notificationSlice";
 
 //Composant d'affichages des matchs pour un tournoi avec des matchs à elimination aller-retour.
 const AllerRetourEliminationMatchList = ({ tournoiId }) => {
@@ -29,9 +31,6 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.match.loading);
 
-  // console.log(tournoiId);
-  // console.log(data);
-  //console.log(tournament);
   // Récupérer les données des matchs lorsque 'tournoiId' change
   useEffect(() => {
     const fetchData = async () => {
@@ -193,9 +192,11 @@ const AllerRetourEliminationMatchList = ({ tournoiId }) => {
 
   //Gestion d'ajout/suppression d'un match en favoris
   const userMatchs = useSelector((state) => state.match.userMatchs);
-  const toggleFavorite = (event, match) => {
+  const toggleFavorite = async (event, match) => {
     event.stopPropagation();
-    //console.log("Toggle match avec ID:", match.match_id);
+    const token = await registerForPushNotificationsAsync();
+    const tokenValue = token.data;
+    dispatch(handleUserNotification({ matchId: match.id, token: tokenValue }));
     dispatch(toggleUserMatch(match.id));
     //console.log("Matchs favoris actuels:", userMatchs); // Utilisez la variable userMatchs déjà définie
   };
