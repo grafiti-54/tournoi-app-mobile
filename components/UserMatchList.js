@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Button,
   Image,
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  AppState,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,7 +26,12 @@ import MatchDetail from "./MatchDetail";
 import NoFollowMatch from "./NoFollowMatch";
 import moment from "moment";
 import { GlobalStyle } from "./styles/GlobalStyle";
+import registerForPushNotificationsAsync from "../services/notificationService";
+import { handleUserNotification } from "../redux/features/notificationSlice";
+import * as Notifications from 'expo-notifications';
 
+
+//Composant qui regroupe la liste des matchs suivi (favoris) de l'utilisateur.
 const UserMatchList = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -38,7 +43,7 @@ const UserMatchList = () => {
   // Filtrer les matchs pour obtenir seulement les matchs favoris
   const userMatchs = allMatchs
     .filter((match) => match) // exclure les éléments null
-    .filter((match) => userMatchsIds.includes(match.match_id)); // assurez-vous que match_id est une chaîne
+    .filter((match) => userMatchsIds?.includes(match.match_id)); // assurez-vous que match_id est une chaîne
   //console.log("Matchs favoris:", userMatchs);
   useEffect(() => {
     const fetchData = async () => {
@@ -67,15 +72,37 @@ const UserMatchList = () => {
     );
   };
 
+  //Notification
+  async function showLocalNotification(title, body) {
+    const identifier = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+      },
+      trigger: null, // cela signifie que la notification sera affichée immédiatement
+    });
+    return identifier;
+  }
+  
   //Mise a jour instantané du status en live du match avec socket io.
   useEffect(() => {
     const socket = io.connect(process.env.EXPO_PUBLIC_LOCAL_API_URL);
+    //console.log("Socket Connected:", socket.connected);
     socket.on("liveMatchUpdated", (data) => {
       dispatch(updateMatchLiveLocally(data));
     });
     socket.on("scoreUpdated", (data) => {
+      //console.log("Score Updated:", data);
+      //console.log("Score Updated Event Received:", data);
       // Mettez à jour le score du match localement
       dispatch(updateMatchScoreLocally(data));
+      //console.log("data recu pour la notifiction ", data);
+      if (userMatchsIds?.includes(data.matchId)) {
+        // Si l'application n'est pas active, envoyez la notification
+        // if (AppState.currentState !== "active") {
+          showLocalNotification("TOURNOI-APP", data.message);
+        //}
+      }
     });
     socket.on("matchScoreValidated", (data) => {
       dispatch(
@@ -91,7 +118,7 @@ const UserMatchList = () => {
     return () => {
       socket.disconnect();
     };
-  }, [dispatch]);
+  }, [dispatch, userMatchsIds]);
 
   //Gestion ouverture/fermeture de la modal de détail du match.
   const [modalVisible, setModalVisible] = useState(false);
@@ -107,11 +134,16 @@ const UserMatchList = () => {
   };
 
   //Gestion d'ajout/suppression d'un match en favoris
-  const toggleFavorite = (event, match) => {
+  const toggleFavorite = async (event, match) => {
     event.stopPropagation();
-    //console.log("Toggle match avec ID:", match.match_id);
+    const token = await registerForPushNotificationsAsync();
+    //console.log("token:", JSON.stringify(token));
+    const tokenValue = token.data;
+    // Dispatch l'action pour s'abonner aux notifications
+    dispatch(
+      handleUserNotification({ matchId: match.match_id, token: tokenValue })
+    );
     dispatch(toggleUserMatch(match.match_id));
-    //console.log("Matchs favoris actuels:", userMatchs); // Utilisez la variable userMatchs déjà définie
   };
 
   return (
@@ -345,7 +377,7 @@ const UserMatchList = () => {
           ))}
         </>
       )}
-      {userMatchs?.length === 0 ? (
+      {/* {userMatchs?.length === 0 ? (
         <Text></Text>
       ) : (
         <View
@@ -371,7 +403,7 @@ const UserMatchList = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      )}
+      )} */}
     </View>
   );
 };
