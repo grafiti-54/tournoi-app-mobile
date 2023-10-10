@@ -10,7 +10,12 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_LOCAL_API_URL": "https://tournoi-app-api-2023.onrender.com",
+        "EXPO_PUBLIC_LOCAL_BASE_URL": "https://tournoi-app.netlify.app"
+      }
+    }
   },
   "submit": {
     "production": {}

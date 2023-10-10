@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670009638015",
+    "project_id": "tournoi-app",
+    "storage_bucket": "tournoi-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670009638015:android:6a23d48e0eed1c9947134a",
+        "android_client_info": {
+          "package_name": "com.grafiti54.TournoiAppMobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA69WRK-Koo23W9xTz_3OdL7Cf4K64BykQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
