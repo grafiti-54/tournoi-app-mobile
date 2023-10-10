@@ -28,22 +28,32 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Cette application utilise la caméra pour scanner des QR codes."
       },
-      "googleServicesFile": "./GoogleService-Info.plist" 
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.grafiti54.TournoiAppMobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "CAMERA_ROLL"],
-      "googleServicesFile": "./google-services.json" 
+      "permissions": [
+        "CAMERA",
+        "CAMERA_ROLL",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "googleServicesFile": "./google-services.json",
+      "package": "com.grafiti54.TournoiAppMobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "baseUrl": "https://tournoi-app.netlify.app",
-      "projectId": "ca003b53-7cfa-4077-ba9c-4cbe836f9126"
+      "projectId": "ca003b53-7cfa-4077-ba9c-4cbe836f9126",
+      "eas": {
+        "projectId": "e39a587c-02b9-48be-97b5-23b419afd04e"
+      }
     }
   }
 }
