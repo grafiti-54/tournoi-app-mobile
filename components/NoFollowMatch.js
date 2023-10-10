@@ -35,7 +35,7 @@ const NoFollowMatch = () => {
       >
         Vous n'avez pas commencé à suivre de matchs favoris pour ce tournoi. Pour suivre un match,
         appuyez sur l'étoile dans la liste des matchs du tournoi. Vous serez
-        averti d'une notification à chaque fois que le score du match évolura.
+        averti d'une notification à chaque fois que le score du match évoluera.
       </Text>
     </View>
   );

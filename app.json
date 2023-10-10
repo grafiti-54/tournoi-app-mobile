@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "Tournoi-App-Mobile",
+    "name": "Tournoi-App Mobile",
     "slug": "Tournoi-App-Mobile",
+    "description": "Suivi en direct des résultats des tournois créés et partagés sur l'application tournoi-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

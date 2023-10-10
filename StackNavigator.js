@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,7 +12,7 @@ import HomeScreen from "./screens/HomeScreen";
 import QRCodeScreen from "./screens/QRCodeScreen";
 
 import TournoiScreen from "./screens/TournoiScreen";
-import MesFavorisScreen from './screens/MesFavorisScreen';
+import MesFavorisScreen from "./screens/MesFavorisScreen";
 
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -37,8 +36,13 @@ const StackNavigator = () => {
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {
-            height: 80,
+            height: 90,
+            width: "95%",
             backgroundColor: "#090915",
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginBottom:20,
+            borderRadius:35
             //#02A3FE
           },
         }}
@@ -52,13 +56,13 @@ const StackNavigator = () => {
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
-                <Entypo name="home" size={34} color="#02A3FE" /> // icone plein avec focus.
+                <Entypo name="home" size={40} color="#02A3FE" /> // icone plein avec focus.
               ) : (
-                <AntDesign name="home" size={34} color="white" /> // icon vide sans focus.
+                <AntDesign name="home" size={40} color="white" /> // icon vide sans focus.
               ),
             tabBarLabelStyle: {
               color: "white", // change la couleur du label.
-              fontSize: 16, // change la taille du label.
+              fontSize: 13, // change la taille du label.
               fontFamily: "Poppins",
             },
           }}
@@ -74,19 +78,19 @@ const StackNavigator = () => {
               focused ? (
                 <MaterialCommunityIcons
                   name="tournament"
-                  size={34}
+                  size={40}
                   color="#02A3FE"
                 /> // icone plein avec focus.
               ) : (
                 <MaterialCommunityIcons
                   name="tournament"
-                  size={34}
+                  size={40}
                   color="white"
                 /> // icone vide sans focus.
               ),
             tabBarLabelStyle: {
               color: "white", // change la couleur du label.
-              fontSize: 16, // change la taille du label.
+              fontSize: 13, // change la taille du label.
               fontFamily: "Poppins",
             },
           }}
@@ -99,17 +103,17 @@ const StackNavigator = () => {
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
-                <MaterialIcons name="favorite" size={34} color="#02A3FE" /> // icone plein avec focus.
+                <MaterialIcons name="favorite" size={40} color="#02A3FE" /> // icone plein avec focus.
               ) : (
                 <MaterialIcons
                   name="favorite-outline"
-                  size={34}
+                  size={40}
                   color="white"
                 /> // icone vide sans focus.
               ),
             tabBarLabelStyle: {
               color: "white", // change la couleur du label.
-              fontSize: 16, // change la taille du label.
+              fontSize: 13, // change la taille du label.
               fontFamily: "Poppins",
             },
           }}
@@ -123,13 +127,13 @@ const StackNavigator = () => {
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
-                <AntDesign name="qrcode" size={34} color="#02A3FE" /> // icone plein avec focus.
+                <AntDesign name="qrcode" size={40} color="#02A3FE" /> // icone plein avec focus.
               ) : (
-                <AntDesign name="qrcode" size={34} color="white" /> // icone vide sans focus.
+                <AntDesign name="qrcode" size={40} color="white" /> // icone vide sans focus.
               ),
             tabBarLabelStyle: {
               color: "white",
-              fontSize: 16,
+              fontSize: 13,
               fontFamily: "Poppins",
             },
           }}
@@ -159,5 +163,3 @@ const StackNavigator = () => {
 };
 
 export default StackNavigator;
-
-const styles = StyleSheet.create({});
