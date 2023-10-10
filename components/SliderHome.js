@@ -34,7 +34,7 @@ const SliderHome = () => {
         >
           <AntDesign name="qrcode" size={50} color="black" />
           <Text style={{ color: "black", fontSize: 15, fontWeight: "500" }}>
-            Scannez ou recherchez le QR code du tournoi que vous souhaitez suivre.
+            Recherchez ou scannez le QR code du tournoi que vous souhaitez suivre.
           </Text>
         </Pressable>
         {/* Card 2 slider */}
