@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Tournoi-App Mobile",
-    "slug": "Tournoi-App-Mobile",
+    "slug": "tournoi-app-mobile",
     "description": "Suivi en direct des résultats des tournois créés et partagés sur l'application tournoi-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -52,8 +52,9 @@
       "baseUrl": "https://tournoi-app.netlify.app",
       "projectId": "ca003b53-7cfa-4077-ba9c-4cbe836f9126",
       "eas": {
-        "projectId": "e39a587c-02b9-48be-97b5-23b419afd04e"
+        "projectId": "f184aa79-830f-4400-8827-d7bc97823b25"
       }
-    }
+    },
+    "owner": "grafiti54"
   }
 }
