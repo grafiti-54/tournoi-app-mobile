@@ -160,7 +160,7 @@ const UserTournamentList = () => {
             <Text style={styles.text}>
               {moment
                 .utc(tournament?.horaire_debut)
-                .tz("Europe/Paris")
+                //.tz("Europe/Paris")
                 .format("dddd D MMMM YYYY HH:mm")}
               {/* {moment.utc(tournament.horaire_debut).format("HH:mm")} */}
             </Text>

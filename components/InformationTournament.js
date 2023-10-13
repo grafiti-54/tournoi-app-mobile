@@ -55,7 +55,7 @@ const InformationTournament = ({ currentTournamentId }) => {
               <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                 {moment
                   .utc(tournoi?.horaire_debut)
-                  .tz("Europe/Paris")
+                  //.tz("Europe/Paris")
                   .format("dddd D MMMM YYYY HH:mm")}
               </Text>
               <Text
