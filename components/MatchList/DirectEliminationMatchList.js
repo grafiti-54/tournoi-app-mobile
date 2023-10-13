@@ -32,11 +32,14 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
   const loading = useSelector((state) => state.match.loading);
 
   // Récupérer les données des matchs lorsque 'tournoiId' change
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await dispatch(fetchAllMatch(tournoiId));
+  //   };
+  //   fetchData();
+  // }, [tournoiId, dispatch]);
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchAllMatch(tournoiId));
-    };
-    fetchData();
+    dispatch(fetchAllMatch(tournoiId));
   }, [tournoiId, dispatch]);
 
   // Mise à jour de l'état du tournoi lorsque les données ('data') changent
@@ -63,7 +66,7 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
         round: match?.round,
         is_live: match?.is_live,
         horaire: match?.horaire,
-        is_validated: match.is_validated,
+        is_validated: match?.is_validated,
       };
     });
   };
@@ -109,12 +112,12 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
       maxRound++;
     }
     // Supprimer le dernier tour si c'est un tour supplémentaire après la finale
-    if (
-      tourney[tourney.length - 1].length === 1 &&
-      tourney[tourney.length - 2].length === 2
-    ) {
-      tourney.pop();
-    }
+    // if (
+    //   tourney[tourney.length - 1].length === 1 &&
+    //   tourney[tourney.length - 2].length === 2
+    // ) {
+    //   tourney.pop();
+    // }
     return tourney;
   };
 
@@ -198,7 +201,10 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View 
+    // style={{ flex: 1 }}
+    style={{marginBottom:"550px"}}
+    >
       <Modal
         animationType="slide"
         transparent={true}
@@ -228,7 +234,10 @@ const DirectEliminationMatchList = ({ tournoiId }) => {
         <>
           <View>
             {tournament.map((round, roundIndex) => {
-              const roundNumber = round.length / 2;
+              {
+                /* const roundNumber = round.length / 2; */
+              }
+              const roundNumber = round.length;
               return (
                 <View key={roundIndex} style={{ marginVertical: 10 }}>
                   {/* Container du tour du tournoi  */}

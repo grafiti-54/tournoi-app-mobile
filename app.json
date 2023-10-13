@@ -55,6 +55,12 @@
         "projectId": "f184aa79-830f-4400-8827-d7bc97823b25"
       }
     },
-    "owner": "grafiti54"
+    "owner": "grafiti54",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f184aa79-830f-4400-8827-d7bc97823b25"
+    }
   }
 }
