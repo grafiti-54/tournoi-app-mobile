@@ -14,15 +14,15 @@ async function registerForPushNotificationsAsync() {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
-    console.log("Final Permission Status:", finalStatus);
-    console.log("Generated Token:", token);
+    // console.log("Final Permission Status:", finalStatus);
+    // console.log("Generated Token:", token);
     if (finalStatus !== "granted") {
       alert("Failed to get push token for push notification!");
       return;
     }
     const projectId = Constants.expoConfig.extra.projectId;
     token = await Notifications.getExpoPushTokenAsync({ projectId });
-    console.log("Generated Token:", token);
+    //console.log("Generated Token:", token);
   } else {
     alert("Vous devez utiliser un téléphone physique pour pouvoir utiliser les notifications!");
   }

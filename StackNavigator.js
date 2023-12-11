@@ -10,14 +10,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import HomeScreen from "./screens/HomeScreen";
 import QRCodeScreen from "./screens/QRCodeScreen";
-
 import TournoiScreen from "./screens/TournoiScreen";
 import MesFavorisScreen from "./screens/MesFavorisScreen";
 
 const StackNavigator = () => {
-  const Tab = createBottomTabNavigator();
-  const Stack = createNativeStackNavigator();
-
   //Supprime le theme(blanc) d'origine de react-navigation.
   const navTheme = {
     colors: {
@@ -29,6 +25,9 @@ const StackNavigator = () => {
   const [isFontLoaded] = useFonts({
     Poppins: Poppins,
   });
+
+  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
 
   //Menu en bas de l'écran du téléphone.
   function BottomTabs() {
@@ -43,13 +42,12 @@ const StackNavigator = () => {
             marginLeft: "auto",
             marginBottom:20,
             borderRadius:35
-            //#02A3FE
           },
         }}
       >
         {/* Accueil menu en bas de l'écran du téléphone. */}
         <Tab.Screen
-          name="Home" // name à utiliser lors de l'utilisation de navigation.navigate("Home".....
+          name="Home"
           component={HomeScreen}
           options={{
             tabBarLabel: "Accueil",
@@ -58,18 +56,18 @@ const StackNavigator = () => {
               focused ? (
                 <Entypo name="home" size={40} color="#02A3FE" /> // icone plein avec focus.
               ) : (
-                <AntDesign name="home" size={40} color="white" /> // icon vide sans focus.
+                <AntDesign name="home" size={40} color="white" /> // icon blanc sans focus.
               ),
             tabBarLabelStyle: {
-              color: "white", // change la couleur du label.
-              fontSize: 13, // change la taille du label.
+              color: "white",
+              fontSize: 13,
               fontFamily: "Poppins",
             },
           }}
         />
         {/* Mes tournois menu en bas de l'écran du téléphone. */}
         <Tab.Screen
-          name="Tournoi detail"
+          name="Tournoi detail" // name à utiliser lors de l'utilisation de navigation.navigate("Home".....
           component={TournoiScreen}
           options={{
             tabBarLabel: "Tournoi",
@@ -151,11 +149,6 @@ const StackNavigator = () => {
             component={BottomTabs}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
-            name="TournamentDetails"
-            component={TournoiScreen}
-            options={{ headerTitle: "Détails du Tournoi" }}
-          /> */}
         </Stack.Navigator>
       ) : null}
     </NavigationContainer>

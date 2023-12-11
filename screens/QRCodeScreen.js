@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { resetSearchValue } from "../redux/features/tournoiSlice";
 
 
+//Page de scan du qr code d'un tournoi avec l'appareil photo.
 const QRCodeScreen = () => {
   const navigation = useNavigation();
   const [seacrhMenuVisible, setSeacrhMenuVisible] = useState(false);

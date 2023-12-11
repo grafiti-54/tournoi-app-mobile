@@ -4,6 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
+//Slider sur la page d'accueil.
 const SliderHome = () => {
   return (
     <>
