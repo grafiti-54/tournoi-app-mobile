@@ -84,9 +84,11 @@ const HomeScreen = () => {
     setSeacrhMenuVisible(false);
   };
 
+  //Contenu de l'écran d'accueil.
   const content = (
     <View style={{ flex: 1 }}>
       {seacrhMenuVisible && (
+        //Composant menu de recherche des tournois publics
         <SeacrhMenu
           style={{
             position: "absolute",
@@ -95,15 +97,13 @@ const HomeScreen = () => {
             right: 0,
             zIndex: 1,
           }}
-          onAddToFavorites={handleAddToFavorites}
+          onAddToFavorites={handleAddToFavorites} // props ajout aux favoris.
         />
       )}
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
         <View
           style={{
-            //height: "100%",
-            display: "flex",
-            justifyContent: "space-around",
+            display: "flex", justifyContent: "space-around",
           }}
         >
           {/* Partie 1 - titre */}
@@ -131,7 +131,6 @@ const HomeScreen = () => {
               marginTop: 20,
               justifyContent: "center",
               alignItems: "center",
-              //height: "35%",
             }}
           >
             <Image
@@ -144,10 +143,10 @@ const HomeScreen = () => {
           {/*Partie 3 - Slider de card */}
           <View
             style={{
-              //height: "40%",
               marginVertical: 30,
             }}
           >
+          {/* Composant slider */}
             <SliderHome />
           </View>
         </View>

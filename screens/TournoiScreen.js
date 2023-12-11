@@ -17,7 +17,6 @@ import ClassementTournament from "../components/ClassementTournament";
 import { fetchTournamentById } from "../redux/features/tournoiSlice";
 import NoFollowTournament from "../components/NoFollowTournament";
 import { resetSearchValue } from "../redux/features/tournoiSlice";
-import { fetchAllMatch } from "../redux/features/matchSlice";
 
 //Screen détails du tournoi divisé en 3 partie ( info, matchs , classements)
 const TournoiScreen = () => {
@@ -32,8 +31,6 @@ const TournoiScreen = () => {
   const scrollRef = useRef();
   const [selectedComponent, setSelectedComponent] = useState("Informations");
   const dispatch = useDispatch();
-  //console.log("id récupéré lors de la navigation", currentTournamentId);
-  //console.log("Information du tournoi : ", tournoi);
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", () => {
@@ -109,8 +106,6 @@ const TournoiScreen = () => {
     if (!tournoi) {
       return <NoFollowTournament />;
     }
-
-    // console.log(currentTournamentId);
 
     return (
       <Animated.ScrollView style={{ flex: 1 }} ref={scrollRef}>
